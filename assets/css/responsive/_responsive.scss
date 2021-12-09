@@ -1,0 +1,23 @@
+@media only screen and (max-width: 1400px) {
+  @import "./xxl/xxl";
+}
+
+@media only screen and (max-width: 1200px) {
+  @import "./xl/xl";
+}
+
+@media only screen and (max-width: 992px) {
+  @import "./lg/lg";
+}
+
+@media only screen and (max-width: 768px) {
+  @import "./md/md";
+}
+
+@media only screen and (max-width: 576px) {
+  @import "./sm/sm";
+}
+
+@media only screen and (max-width: 0px) {
+  @import "./xs/xs";
+}

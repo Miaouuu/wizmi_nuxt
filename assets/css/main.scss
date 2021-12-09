@@ -1,0 +1,74 @@
+@import "./variables";
+@import "./fonts";
+
+body {
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+}
+
+h1 {
+  font-family: "Nunito Sans", sans-serif;
+  color: $dark-blue;
+}
+
+.container {
+  width: 100%;
+  max-width: 1320px;
+  color: $blue;
+}
+
+.wizmi-form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  max-width: 500px;
+  margin: 0;
+  padding: 12px 8px;
+
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+  .wizmi-form-group {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      padding: 8px;
+
+      font-family: "Nunito Sans", sans-serif;
+      font-size: 0.9em;
+      font-weight: 500;
+      color: $dark-blue;
+    }
+    .wizmi-label {
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.wizmi-label {
+  color: $blue;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.wizmi-button-primary {
+  max-width: 300px;
+  padding: 12px 16px;
+
+  background-color: $blue;
+  color: white;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+
+  border: none;
+  border-radius: 4px;
+
+  cursor: pointer;
+}
+
+@import "./responsive/responsive";
