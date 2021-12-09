@@ -1,13 +1,14 @@
 <template>
   <div class="">
     Stepper
-    <!-- {{ worlds }} -->
+    {{ worlds }}
   </div>
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 
-export default {
+export default Vue.extend({
   name: 'WorldsStepperComponent',
   props: {
     worlds: {
@@ -15,8 +16,7 @@ export default {
       default: ''
     }
   }
-
-}
+})
 </script>
 
 <style scoped>
