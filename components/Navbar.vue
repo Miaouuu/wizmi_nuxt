@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>Page Index</div>
+  <div class="container">
+    Navbar
   </div>
 </template>
 
@@ -8,7 +8,10 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'IndexPage',
-  layout: 'wizmi-base'
+  name: 'NavbarComponent'
 })
 </script>
+
+<style scoped>
+
+</style>

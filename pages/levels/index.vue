@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>Page Index</div>
+    <div>Page level</div>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'IndexPage',
+  name: 'LevelsPage',
   layout: 'wizmi-base'
 })
 </script>
