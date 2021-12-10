@@ -9,6 +9,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Worlds } from '~/store/interfaces'
 import WorldsStepper from '@/components/WorldsStepper/WorldsStepper.vue'
+import { worldsData } from '~/store/worldsData'
 
 @Component({
   components: {
@@ -27,7 +28,7 @@ export default class WorldsPage extends Vue{
   }
 
   getWorlds () {
-    // this.worlds = worldsData
+    this.worlds = worldsData
   }
   // TODO : Move to api file
   // async getWorlds () {
