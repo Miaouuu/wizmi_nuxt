@@ -5,10 +5,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default Vue.extend({
-  name: 'IndexPage',
-  layout: 'wizmi-base'
-})
+@Component
+export default class IndexPage extends Vue{
+  layout(){
+    return 'wizmi-base'
+  } 
+}
 </script>

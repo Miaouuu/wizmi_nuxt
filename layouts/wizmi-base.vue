@@ -7,16 +7,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 import Navbar from '~/components/Navbar.vue'
 import Footer from '~/components/Footer.vue'
 
-export default Vue.extend({
-  components: { Navbar, Footer },
+@Component({
+  components: {
+    Navbar,
+    Footer
+  }
+})
+export default class WizmiBase extends Vue{
   layout () {
     return 'wizmi-base'
   }
-})
+}
 </script>
 
 <style scoped>

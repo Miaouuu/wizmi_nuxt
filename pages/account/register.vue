@@ -30,29 +30,28 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { Notification, NotificationTypes } from '~/store/interfaces'
 
-export default Vue.extend({
-  name: 'RegisterPage',
-  layout: 'wizmi-base',
-  props: { },
-  data () {
-    return {
-      user: {
+@Component
+export default class RegisterPage extends Vue{
+  user = {
         username: '',
         email: '',
         password: '',
         passwordVerify: ''
-      },
-      notifications: {
-        email: {} as Notification,
-        username: {} as Notification
       }
-    }
-  },
 
-  methods: {
+  notifications = {
+    email: {} as Notification,
+    username: {} as Notification
+  }
+
+  layout(){
+    return 'wizmi-base'
+  }
+
+
     validateUsername () {
       if (/^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(this.user.username)) {
         return true
@@ -64,7 +63,8 @@ export default Vue.extend({
         this.notifications.username = notif
         return false
       }
-    },
+    }
+
     validateEmail () {
       if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
         return true
@@ -76,7 +76,8 @@ export default Vue.extend({
         this.notifications.email = notif
         return false
       }
-    },
+    }
+
     submitForm () {
       if ((this.user.password === this.user.passwordVerify) && this.validateUsername() && this.validateEmail()) {
         console.log(this.user)
@@ -84,7 +85,7 @@ export default Vue.extend({
         console.log(this.notifications)
       }
     }
-  }
-})
+  
+}
 
 </script>

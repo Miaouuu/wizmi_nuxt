@@ -20,45 +20,45 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { Notification, NotificationTypes } from '~/store/interfaces'
 
-export default Vue.extend({
-  name: 'LoginPage',
-  layout: 'wizmi-base',
-  props: { },
-  data () {
-    return {
-      user: {
+@Component
+export default class Loginpage extends Vue{
+  user = {
         email: '',
         password: ''
-      },
-      notifications: {
-        email: {} as Notification
       }
-    }
-  },
 
-  methods: {
-    validateEmail () {
-      if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
-        return true
-      } else {
-        const notif: Notification = {
-          type: NotificationTypes.Error,
-          message: 'Please enter a valid email address'
-        }
-        this.notifications.email = notif
-        return false
+  notifications = {
+    email: {} as Notification
+  }
+
+  layout(){
+      return 'wizmi-base'
+  } 
+
+
+  validateEmail () {
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
+      return true
+    } else {
+      const notif: Notification = {
+        type: NotificationTypes.Error,
+        message: 'Please enter a valid email address'
       }
-    },
-    submitForm () {
-      if (this.validateEmail()) {
-        console.log(this.user)
-      } else {
-        console.log(this.notifications)
-      }
+      this.notifications.email = notif
+      return false
     }
   }
-})
+
+  submitForm () {
+    if (this.validateEmail()) {
+      console.log(this.user)
+    } else {
+      console.log(this.notifications)
+    }
+  }
+  
+}
 </script>

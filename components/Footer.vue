@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default Vue.extend({
-  name: 'FooterComponent'
-})
+@Component
+export default class Footer extends Vue{
+}
 
 </script>
 
