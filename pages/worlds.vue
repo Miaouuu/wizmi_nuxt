@@ -9,7 +9,9 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Worlds } from '~/store/interfaces'
 import WorldsStepper from '@/components/WorldsStepper/WorldsStepper.vue'
-import { worldsData } from '~/store/worldsData'
+import WorldsApiHelper from '~/plugins/api/worlds'
+
+const worldsApiHelper = new WorldsApiHelper;
 
 @Component({
   components: {
@@ -27,18 +29,8 @@ export default class WorldsPage extends Vue{
     await this.getWorlds()
   }
 
-  getWorlds () {
-    this.worlds = worldsData
+  async getWorlds() {
+    await worldsApiHelper.getWorlds()
   }
-  // TODO : Move to api file
-  // async getWorlds () {
-  //   await fetch(
-  //     'https://wizmi-dev.miaou.land/worlds'
-  //   ).then((res) => {
-  //     this.worlds = res.json()
-  //   }).then(() => {
-  //     console.log(this.worlds)
-  //   })
-  // }
 }
 </script>

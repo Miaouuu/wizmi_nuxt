@@ -51,40 +51,39 @@ export default class RegisterPage extends Vue{
     return 'wizmi-base'
   }
 
-
-    validateUsername () {
-      if (/^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(this.user.username)) {
-        return true
-      } else {
-        const notif: Notification = {
-          type: NotificationTypes.Error,
-          message: 'Please enter a valid username'
-        }
-        this.notifications.username = notif
-        return false
+  validateUsername () {
+    if (/^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(this.user.username)) {
+      return true
+    } else {
+      const notif: Notification = {
+        type: NotificationTypes.Error,
+        message: 'Please enter a valid username'
       }
+      this.notifications.username = notif
+      return false
     }
+  }
 
-    validateEmail () {
-      if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
-        return true
-      } else {
-        const notif: Notification = {
-          type: NotificationTypes.Error,
-          message: 'Please enter a valid email address'
-        }
-        this.notifications.email = notif
-        return false
+  validateEmail () {
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
+      return true
+    } else {
+      const notif: Notification = {
+        type: NotificationTypes.Error,
+        message: 'Please enter a valid email address'
       }
+      this.notifications.email = notif
+      return false
     }
+  }
 
-    submitForm () {
-      if ((this.user.password === this.user.passwordVerify) && this.validateUsername() && this.validateEmail()) {
-        console.log(this.user)
-      } else {
-        console.log(this.notifications)
-      }
+  submitForm () {
+    if ((this.user.password === this.user.passwordVerify) && this.validateUsername() && this.validateEmail()) {
+      console.log(this.user)
+    } else {
+      console.log(this.notifications)
     }
+  }
   
 }
 
