@@ -6,21 +6,13 @@
 </template>
 
 <script lang="ts">
-import Vue, {PropOptions} from 'vue'
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
 import { Worlds } from '~/store/interfaces'
 
-export default Vue.extend({
-  name: 'WorldsStepperComponent',
-  props: {
-    worlds: {
-      type: Array,
-      required: true
-    } as PropOptions<Worlds[]>
-  },
-  methods: {
-
-  }
-})
+@Component
+export default class WorldsStepper extends Vue {
+  @Prop({ required: true }) worlds!: Worlds
+}
 </script>
 
 <style scoped>
