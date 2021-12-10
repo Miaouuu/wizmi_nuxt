@@ -17,7 +17,7 @@ import Footer from '~/components/Footer.vue'
     Footer
   }
 })
-export default class WizmiBase extends Vue{
+export default class WizmiBase extends Vue {
   layout () {
     return 'wizmi-base'
   }

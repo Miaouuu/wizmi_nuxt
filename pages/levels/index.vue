@@ -8,9 +8,9 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class LevelsPage extends Vue{
-  layout(){
+export default class LevelsPage extends Vue {
+  layout () {
     return 'wizmi-base'
-  } 
+  }
 }
 </script>

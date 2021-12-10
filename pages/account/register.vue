@@ -34,20 +34,20 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { Notification, NotificationTypes } from '~/store/interfaces'
 
 @Component
-export default class RegisterPage extends Vue{
+export default class RegisterPage extends Vue {
   user = {
-        username: '',
-        email: '',
-        password: '',
-        passwordVerify: ''
-      }
+    username: '',
+    email: '',
+    password: '',
+    passwordVerify: ''
+  }
 
   notifications = {
     email: {} as Notification,
     username: {} as Notification
   }
 
-  layout(){
+  layout () {
     return 'wizmi-base'
   }
 
@@ -84,7 +84,6 @@ export default class RegisterPage extends Vue{
       console.log(this.notifications)
     }
   }
-  
 }
 
 </script>
