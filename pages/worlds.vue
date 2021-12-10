@@ -1,19 +1,14 @@
 <template>
   <div>
     <h1>Page Worlds</h1>
-    <WorldsStepper />
+    <WorldsStepper :worlds="worlds" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Worlds } from '~/store/interfaces'
 import WorldsStepper from '@/components/WorldsStepper/WorldsStepper.vue'
-
-interface Worlds{
-  name: string,
-  value: number,
-  levels: []
-}
 
 export default Vue.extend({
   name: 'WorldsPage',
@@ -21,16 +16,26 @@ export default Vue.extend({
   layout: 'wizmi-base',
   data () {
     return {
-      worlds: {} as Worlds
+      worlds: [] as Worlds[]
     }
   },
-  mounted () {
-    this.ok()
+  async mounted () {
+    await this.getWorlds()
   },
   methods: {
-    ok () {
-      console.log('test')
+    getWorlds () {
+      // this.worlds = worldsData
     }
+    // TODO : Move to api file
+    // async getWorlds () {
+    //   await fetch(
+    //     'https://wizmi-dev.miaou.land/worlds'
+    //   ).then((res) => {
+    //     this.worlds = res.json()
+    //   }).then(() => {
+    //     console.log(this.worlds)
+    //   })
+    // }
   }
 })
 </script>

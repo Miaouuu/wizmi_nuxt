@@ -21,16 +21,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
-// TODO : CLEAN
-enum NotificationTypes{
-  Error = 'error'
-}
-
-interface Notification{
-  type: NotificationTypes,
-  message: string
-}
+import { Notification, NotificationTypes } from '~/store/interfaces'
 
 export default Vue.extend({
   name: 'LoginPage',
