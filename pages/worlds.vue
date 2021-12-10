@@ -30,7 +30,8 @@ export default class WorldsPage extends Vue{
   }
 
   async getWorlds() {
-    await worldsApiHelper.getWorlds()
+    const worlds: Worlds[] = await worldsApiHelper.getWorlds()
+    this.worlds = worlds
   }
 }
 </script>

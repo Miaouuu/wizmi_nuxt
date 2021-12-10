@@ -11,7 +11,7 @@ import { Worlds } from '~/store/interfaces'
 
 @Component
 export default class WorldsStepper extends Vue {
-  @Prop({ required: true }) worlds!: Worlds
+  @Prop({ required: true }) worlds!: Worlds[]
 }
 </script>
 

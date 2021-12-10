@@ -1,28 +1,23 @@
 import axios from "axios";
 import ApiHelper from ".."
+import { Levels } from "~/store/interfaces";
 
 export default class LevelsApiHelper extends ApiHelper{
-  getLevels() {
-    axios.get(this.apiRoute + '/levels')
-    .then(function (response) {
-      console.log(response);
-      return response.data
-    })
-    .catch(function (error) {
-      console.log(error);
-      return error
-    })
-  };
+  async getLevels(): Promise<Levels[]> {
+    try {
+      const response: Levels[] = await axios.get(this.apiRoute + '/levels');
+      return response
+    } catch (error) {
+      throw new Error('Oops')
+    } 
+  }
 
-  getLevel(id: string) {
-    axios.get(this.apiRoute + `/levels/${id}`)
-    .then(function (response) {
-      console.log(response);
-      return response.data
-    })
-    .catch(function (error) {
-      console.log(error);
-      return error
-    })
+  async getLevelById(id: string): Promise<Levels>  {
+    try {
+      const response: Levels = await axios.get(this.apiRoute + `/levels/${id}`);
+      return response
+    } catch (error) {
+      throw new Error('Oops')
+    } 
   }
 }
