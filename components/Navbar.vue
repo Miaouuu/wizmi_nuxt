@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    Navbar
+    <NuxtLink to="/">Home page</NuxtLink>
+    <NuxtLink to="/worlds">Worlds</NuxtLink>
   </div>
 </template>
 
@@ -9,7 +10,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class Navbar extends Vue{
-
+  
 }
 </script>
 
