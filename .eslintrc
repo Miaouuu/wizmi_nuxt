@@ -15,5 +15,5 @@
     "import/core-modules": [
       "vue"
     ]
-  },
+  }
 }

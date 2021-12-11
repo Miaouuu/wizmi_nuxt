@@ -14,8 +14,8 @@
           :key="levelIndex"
           class="wizmi-worlds-item"
           :class="{
-            'active' : (level.id - 1) === selected,
-            'previous-active' : level.id === selected
+            'active' : levelIndex === selectedLevel && worldIndex === selectedWorld,
+            'previous-active' : levelIndex === selectedLevel - 1 && worldIndex === selectedWorld
           }"
         >
           {{ world.name }}<br>{{ level.name }}
@@ -31,42 +31,55 @@ import { Worlds } from '~/store/interfaces'
 
 @Component
 export default class HorizontalScroller extends Vue {
-  selected: number = 0
+  selectedLevel: number = 0
+  selectedWorld: number = 0
   oldDelta: number = 0
 
-    @Prop({ required: true }) worlds!: Worlds[]
+  @Prop({ required: true }) worlds!: Worlds[]
 
-    mounted () {
-      const element = document.documentElement
-      element.addEventListener('wheel', this.transformScroll)
+  mounted () {
+    const element = document.documentElement
+    element.addEventListener('wheel', this.transformScroll)
+  }
+
+  transformScroll (event: WheelEvent) {
+    this.oldDelta += event.deltaY
+    if (this.oldDelta < -500) {
+      this.changeSelectedElement(-1)
+    } else if (this.oldDelta > 500) {
+      this.changeSelectedElement(1)
     }
+  }
 
-    transformScroll (event: WheelEvent) {
-      this.oldDelta += event.deltaY
-      console.log(this.oldDelta)
-
-      if (this.oldDelta < -500) {
-        this.changeSelectedElement(-1)
-        console.log('UP')
-      } else if (this.oldDelta > 500) {
-        console.log('Down')
-        this.changeSelectedElement(1)
+  changeSelectedElement (upOrDown: number) {
+    let tempLevel = this.selectedLevel
+    tempLevel += upOrDown
+    if (tempLevel > this.worlds[this.selectedWorld].levels.length - 1) {
+      if (this.worlds[this.selectedWorld + 1]) {
+        this.selectedWorld++
+        this.selectedLevel = 0
       }
+    } else if (tempLevel < 0) {
+      if (this.worlds[this.selectedWorld - 1]) {
+        this.selectedWorld--
+        this.selectedLevel = this.worlds[this.selectedWorld].levels.length - 1
+      }
+    } else {
+      this.selectedLevel = tempLevel
     }
 
-    changeSelectedElement (i: number) {
-      let temp = this.selected
-      temp += i
-      temp = temp < 0 ? 0 : temp
-      temp = temp > 7 ? 7 : temp
-      this.selected = temp
-      const c = document.getElementById(`w-${this.selected}`)
-      c?.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center'
-      })
-      this.oldDelta = 0
-    }
+    const world = document.getElementById(`w-${this.selectedWorld}`)
+    world?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'start'
+    })
+    const level = document.getElementById(`w-${this.selectedWorld}-l-${this.selectedLevel}`)
+    level?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center'
+    })
+    this.oldDelta = 0
+  }
 }
 </script>
 
