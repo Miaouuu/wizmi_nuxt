@@ -89,18 +89,83 @@ export default class HorizontalScroller extends Vue {
   margin-right: 16px;
 
   // TODO : Pas beau
+  // Targets every stepper dash between worlds
   &:not(:last-child):after {
     content: "";
 
     position: absolute;
     bottom: 50px;
     left: 16%;
-    width: calc(100% + 10px);
+    width: calc(100% + 100px);
     height: 0px;
     border-bottom: 2px dashed #ccc;
     z-index: -1;
   }
 
+  .wizmi-worlds-item{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+
+    width: 20vh;
+    height: 20vh;
+    margin: 0 10vh 96px 10vh;
+
+    border: 4px solid black;
+
+    transition: all 0.3ms ease-in-out;
+    cursor: pointer;
+
+    // Targets every level step point
+    &:before{
+      content: "";
+
+      position: absolute;
+      bottom: -61px;
+
+      width: 24px;
+      height: 24px;
+
+      border-radius: 50%;
+      background-color: black;
+
+      cursor: auto;
+    }
+
+    // Targets every stepper dash
+    &:after{
+      cursor: auto;
+    }
+
+    // Targets every stepper dash that is not link to the last level of a world
+    &:not(:last-child):after {
+      content: "";
+
+      position: absolute;
+      bottom: -50px;
+      left: 50%;
+      width: 200%;
+      height: 2px;
+      background-color: black;
+    }
+  }
+
+  // Selected level
+  .active{
+    width: 40vh;
+    height: 40vh;
+
+    // Targets the step point with class .active
+    &:before{
+      bottom: -72px;
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  // Targets the dash from .active class only if it's the world last level
   .active:last-child:after{
     content: "";
 
@@ -109,65 +174,7 @@ export default class HorizontalScroller extends Vue {
     right: 50%;
     width: 100%;
     height: 2px;
-    background-color: blue;
-  }
-}
-
-.wizmi-worlds-item{
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  align-self: flex-end;
-
-  width: 20vh;
-  height: 20vh;
-  margin: 0 10vh 96px 10vh;
-
-  border: 4px solid black;
-
-  transition: all 0.3ms ease-in-out;
-  cursor: pointer;
-
-  &:before{
-    content: "";
-
-    position: absolute;
-    bottom: -61px;
-
-    width: 24px;
-    height: 24px;
-
-    border-radius: 50%;
     background-color: black;
-
-    cursor: auto;
-  }
-
-  &:after{
-    cursor: auto;
-  }
-
-  &:not(:last-child):after {
-    content: "";
-
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    width: 200%;
-    height: 2px;
-    background-color: black;
-  }
-}
-
-.wizmi-worlds-item.active{
-  width: 40vh;
-  height: 40vh;
-
-  &:before{
-    bottom: -72px;
-    width: 48px;
-    height: 48px;
   }
 }
 </style>
