@@ -24,20 +24,19 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { Notification, NotificationTypes } from '~/store/interfaces'
 
 @Component
-export default class Loginpage extends Vue{
+export default class Loginpage extends Vue {
   user = {
-        email: '',
-        password: ''
-      }
+    email: '',
+    password: ''
+  }
 
   notifications = {
     email: {} as Notification
   }
 
-  layout(){
-      return 'wizmi-base'
-  } 
-
+  layout () {
+    return 'wizmi-base'
+  }
 
   validateEmail () {
     if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
@@ -59,6 +58,5 @@ export default class Loginpage extends Vue{
       console.log(this.notifications)
     }
   }
-  
 }
 </script>
