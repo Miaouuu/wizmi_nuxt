@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <!-- {{ worlds }} -->
-    <HorizontalScroller />
+    <HorizontalScroller :worlds="worlds" />
   </div>
 </template>
 

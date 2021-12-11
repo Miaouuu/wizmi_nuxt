@@ -2,57 +2,60 @@
   <div class="wizmi-horizontal-scroller-container">
     <div id="scroll" class="wizmi-horizontal-scroller">
       <div
-        v-for="(i, index) in 8"
+        v-for="(i, index) in worlds"
         :id="`t-${index}`"
         :key="index"
         class="wizmi-worlds-item"
         :class="index === selected ? 'active' : '' "
       >
-        {{ index === selected ? selected : 'not-selected' }}
+        {{ index === selected ? selected : index }}
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { Worlds } from '~/store/interfaces'
 
 @Component
 export default class HorizontalScroller extends Vue {
   selected: number = 0
   oldDelta: number = 0
 
-  mounted () {
-    const element = document.documentElement
-    element.addEventListener('wheel', this.transformScroll)
-  }
+    @Prop({ required: true }) worlds!: Worlds[]
 
-  transformScroll (event: WheelEvent) {
-    this.oldDelta += event.deltaY
-    console.log(this.oldDelta)
-
-    if (this.oldDelta < -500) {
-      this.changeSelectedElement(-1)
-      console.log('UP')
-    } else if (this.oldDelta > 500) {
-      console.log('Down')
-      this.changeSelectedElement(1)
+    mounted () {
+      const element = document.documentElement
+      element.addEventListener('wheel', this.transformScroll)
     }
-  }
 
-  changeSelectedElement (i: number) {
-    let temp = this.selected
-    temp += i
-    temp = temp < 0 ? 0 : temp
-    temp = temp > 7 ? 7 : temp
-    this.selected = temp
-    const c = document.getElementById(`t-${this.selected}`)
-    c?.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'start'
-    })
-    this.oldDelta = 0
-  }
+    transformScroll (event: WheelEvent) {
+      this.oldDelta += event.deltaY
+      console.log(this.oldDelta)
+
+      if (this.oldDelta < -500) {
+        this.changeSelectedElement(-1)
+        console.log('UP')
+      } else if (this.oldDelta > 500) {
+        console.log('Down')
+        this.changeSelectedElement(1)
+      }
+    }
+
+    changeSelectedElement (i: number) {
+      let temp = this.selected
+      temp += i
+      temp = temp < 0 ? 0 : temp
+      temp = temp > 7 ? 7 : temp
+      this.selected = temp
+      const c = document.getElementById(`t-${this.selected}`)
+      c?.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center'
+      })
+      this.oldDelta = 0
+    }
 }
 </script>
 
