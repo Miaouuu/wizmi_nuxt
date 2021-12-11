@@ -1,8 +1,14 @@
 <template>
   <div class="wizmi-horizontal-scroller-container">
     <div id="scroll" class="wizmi-horizontal-scroller">
-      <div v-for="(i, index) in 8" :id="`t-${index}`" :key="index" class="block">
-        {{ index === selected ? selected : 'block' }}
+      <div
+        v-for="(i, index) in 8"
+        :id="`t-${index}`"
+        :key="index"
+        class="wizmi-worlds-item"
+        :class="index === selected ? 'active' : '' "
+      >
+        {{ index === selected ? selected : 'not-selected' }}
       </div>
     </div>
   </div>
@@ -53,24 +59,69 @@ export default class HorizontalScroller extends Vue {
 <style lang="scss" scoped>
 
 .wizmi-horizontal-scroller-container{
-  max-width: 100%;
   overflow-x: auto;
 
+  width: auto;
 }
 .wizmi-horizontal-scroller{
-    background-color: #ccc;
-    display: flex;
-    min-width: 200vw
+    display: grid;
+    grid-auto-flow: column;
+
+    width: auto
 }
 
-.block{
+.wizmi-worlds-item{
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
-  width: 500px;
-  height: 500px;
-  border: 2px solid black;
-  background-color: bisque;
-  margin-right: 64px;
+  align-self: flex-end;
+
+  width: 20vh;
+  height: 20vh;
+  margin: 0 10vh 100px 10vh;
+
+  border: 3px solid black;
+
+  transition: all 0.3ms ease-in-out;
+
+  &:before{
+    content: "";
+
+    position: absolute;
+    bottom: -64px;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+    background-color: black;
+  }
+
+  &:not(:last-child):after {
+    content: "";
+
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    width: 200%;
+    height: 2px;
+    background-color: black;
+  }
+}
+
+.wizmi-worlds-item.active{
+  width: 40vh;
+  height: 40vh;
+
+    &:before{
+    bottom: -75px;
+    width: 50px;
+    height: 50px;
+  }
+
+  &:not(:last-child):after {
+    bottom: -50px;
+  }
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="">
-    Stepper
     <!-- {{ worlds }} -->
     <HorizontalScroller />
   </div>
@@ -8,7 +7,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
-import HorizontalScroller from '../HorizontalScroller/HorizontalScroller.vue'
+import HorizontalScroller from './HorizontalScroller.vue'
 import { Worlds } from '~/store/interfaces'
 
 @Component({

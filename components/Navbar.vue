@@ -6,6 +6,12 @@
     <NuxtLink to="/worlds">
       Worlds
     </NuxtLink>
+    <NuxtLink to="/account/login">
+      Login
+    </NuxtLink>
+    <NuxtLink to="/account/register">
+      Register
+    </NuxtLink>
   </div>
 </template>
 
