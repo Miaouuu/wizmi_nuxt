@@ -43,7 +43,7 @@ export default class HorizontalScroller extends Vue {
     const c = document.getElementById(`t-${this.selected}`)
     c?.scrollIntoView({
       behavior: 'smooth',
-      inline: 'center'
+      inline: 'start'
     })
     this.oldDelta = 0
   }
