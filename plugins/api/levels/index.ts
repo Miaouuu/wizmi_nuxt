@@ -3,6 +3,7 @@ import ApiHelper from ".."
 import { Levels } from "~/store/interfaces";
 
 export default class LevelsApiHelper extends ApiHelper{
+
   async getLevels(): Promise<Levels[]> {
     try {
       const response: Levels[] = await axios.get(this.apiRoute + '/levels');

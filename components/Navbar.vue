@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-    <NuxtLink to="/">Home page</NuxtLink>
+    <NuxtLink to="/">Home</NuxtLink>
     <NuxtLink to="/worlds">Worlds</NuxtLink>
+    <NuxtLink to="/levels/">Levels</NuxtLink>
   </div>
 </template>
 

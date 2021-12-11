@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Provide, Vue } from 'nuxt-property-decorator'
 import { Worlds } from '~/store/interfaces'
 import WorldsStepper from '@/components/WorldsStepper/WorldsStepper.vue'
 import WorldsApiHelper from '~/plugins/api/worlds'
@@ -19,7 +19,7 @@ const worldsApiHelper = new WorldsApiHelper;
   }
 })
 export default class WorldsPage extends Vue{
-  worlds: Worlds[] = []
+  @Provide() worlds: Worlds[] = []
 
   layout(){
     return 'wizmi-base'
