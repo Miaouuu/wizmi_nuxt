@@ -13,7 +13,10 @@
           :id="`w-${worldIndex}-l-${levelIndex}`"
           :key="levelIndex"
           class="wizmi-worlds-item"
-          :class="(level.id - 1) === selected ? 'active' : '' "
+          :class="{
+            'active' : (level.id - 1) === selected,
+            'previous-active' : level.id === selected
+          }"
         >
           {{ world.name }}<br>{{ level.name }}
         </div>
@@ -162,6 +165,17 @@ export default class HorizontalScroller extends Vue {
       bottom: -72px;
       width: 48px;
       height: 48px;
+    }
+
+    // Targets the stepper dash with class .active if it's not the last level in the world
+    &:not(:last-child):after{
+      width: calc(100% + 10vh);
+    }
+  }
+
+  .previous-active{
+    &:not(:last-child):after{
+      width: calc(200% + 10vh);
     }
   }
 
