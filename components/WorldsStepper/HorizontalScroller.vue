@@ -2,13 +2,21 @@
   <div class="wizmi-horizontal-scroller-container">
     <div id="scroll" class="wizmi-horizontal-scroller">
       <div
-        v-for="(i, index) in worlds"
-        :id="`t-${index}`"
-        :key="index"
-        class="wizmi-worlds-item"
-        :class="index === selected ? 'active' : '' "
+        v-for="(world, worldIndex) in worlds"
+        :id="`w-${worldIndex}`"
+        :key="worldIndex"
+        class="wizmi-worlds"
       >
-        {{ index === selected ? selected : index }}
+        <h2>{{ worldIndex + 1 }}</h2>
+        <div
+          v-for="(level, levelIndex) in world.levels"
+          :id="`w-${worldIndex}-l-${levelIndex}`"
+          :key="levelIndex"
+          class="wizmi-worlds-item"
+          :class="(level.id - 1) === selected ? 'active' : '' "
+        >
+          {{ world.name }}<br>{{ level.name }}
+        </div>
       </div>
     </div>
   </div>
@@ -49,7 +57,7 @@ export default class HorizontalScroller extends Vue {
       temp = temp < 0 ? 0 : temp
       temp = temp > 7 ? 7 : temp
       this.selected = temp
-      const c = document.getElementById(`t-${this.selected}`)
+      const c = document.getElementById(`w-${this.selected}`)
       c?.scrollIntoView({
         behavior: 'smooth',
         inline: 'center'
@@ -73,6 +81,38 @@ export default class HorizontalScroller extends Vue {
     width: auto
 }
 
+.wizmi-worlds{
+  display: grid;
+  grid-auto-flow: column;
+  position: relative;
+
+  margin-right: 16px;
+
+  // TODO : Pas beau
+  &:not(:last-child):after {
+    content: "";
+
+    position: absolute;
+    bottom: 50px;
+    left: 16%;
+    width: calc(100% + 10px);
+    height: 0px;
+    border-bottom: 2px dashed #ccc;
+    z-index: -1;
+  }
+
+  .active:last-child:after{
+    content: "";
+
+    position: absolute;
+    bottom: -50px;
+    right: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: blue;
+  }
+}
+
 .wizmi-worlds-item{
   display: flex;
   position: relative;
@@ -82,23 +122,30 @@ export default class HorizontalScroller extends Vue {
 
   width: 20vh;
   height: 20vh;
-  margin: 0 10vh 100px 10vh;
+  margin: 0 10vh 96px 10vh;
 
-  border: 3px solid black;
+  border: 4px solid black;
 
   transition: all 0.3ms ease-in-out;
+  cursor: pointer;
 
   &:before{
     content: "";
 
     position: absolute;
-    bottom: -64px;
+    bottom: -61px;
 
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
 
     border-radius: 50%;
     background-color: black;
+
+    cursor: auto;
+  }
+
+  &:after{
+    cursor: auto;
   }
 
   &:not(:last-child):after {
@@ -117,14 +164,10 @@ export default class HorizontalScroller extends Vue {
   width: 40vh;
   height: 40vh;
 
-    &:before{
-    bottom: -75px;
-    width: 50px;
-    height: 50px;
-  }
-
-  &:not(:last-child):after {
-    bottom: -50px;
+  &:before{
+    bottom: -72px;
+    width: 48px;
+    height: 48px;
   }
 }
 </style>
