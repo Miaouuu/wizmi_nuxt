@@ -79,9 +79,9 @@ export default class RegisterPage extends Vue {
 
   submitForm () {
     if ((this.user.password === this.user.passwordVerify) && this.validateUsername() && this.validateEmail()) {
-      console.log(this.user)
+      // console.log(this.user)
     } else {
-      console.log(this.notifications)
+      // console.log(this.notifications)
     }
   }
 }

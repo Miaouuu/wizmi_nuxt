@@ -1,16 +1,19 @@
 <template>
   <div class="container">
     <NuxtLink to="/">
-      Home page
-    </NuxtLink>
-    <NuxtLink to="/worlds">
-      Worlds
+      Home
     </NuxtLink>
     <NuxtLink to="/account/login">
       Login
     </NuxtLink>
     <NuxtLink to="/account/register">
       Register
+    </NuxtLink>
+    <NuxtLink to="/worlds">
+      Worlds
+    </NuxtLink>
+    <NuxtLink to="/levels/1">
+      Levels
     </NuxtLink>
   </div>
 </template>
