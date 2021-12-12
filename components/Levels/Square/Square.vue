@@ -1,8 +1,13 @@
 <template>
   <div class="flex flex-column">
     <div class="flex flex-row h-100">
-      <div class="wizmi-level-aside">
-        aside
+      <div class="flex flex-column wizmi-level-aside">
+        <div class="wizmi-level-info">
+          1-1
+        </div>
+        <div class="wizmi-level-options">
+          aside
+        </div>
       </div>
       <div class="flex flex-column wizmi-level-playable-area">
         <div class="wizmi-level-timeline">
@@ -30,30 +35,38 @@ export default class Square extends Vue {
 <style lang="scss" scoped>
 @import "../../../assets/css/variables";
 
+$margin: 16px;
+$topElementsHeight: 20%;
+
 // TODO? : Move to global css ?
-.wizmi-level-aside, .wizmi-level-timeline, .wizmi-level-game-area{
+.wizmi-level-info, .wizmi-level-options, .wizmi-level-timeline, .wizmi-level-game-area{
   border: 2px solid $blue;
   border-radius: 8px;
 }
 .wizmi-level-aside{
-  display: flex;
   flex-grow: 1;
-
   width: 25%;
+
+  .wizmi-level-info{
+    height: $topElementsHeight;
+    margin-bottom: $margin;
+  }
+  .wizmi-level-options{
+    display: flex;
+    flex-grow: 1;
+  }
 }
 
 .wizmi-level-playable-area{
   flex-grow: 1;
-
-  margin-left: 2%;
+  margin-left: $margin;
 
   .wizmi-level-timeline{
-    height: 20%;
-    margin-bottom: 2%;
+    height: $topElementsHeight;
+    margin-bottom: $margin;
   }
   .wizmi-level-game-area{
     display: flex;
-
     flex-grow: 1;
   }
 }
