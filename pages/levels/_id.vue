@@ -2,11 +2,12 @@
   <div>
     <div>Page level</div>
     <Square/>
+    {{ level }}
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Provide, Vue } from 'nuxt-property-decorator'
+import { Component, ProvideReactive, Vue } from 'nuxt-property-decorator'
 import Square from '../../components/Levels/Square/Square.vue'
 import LevelsApiHelper from '~/plugins/api/levels'
 import { Levels } from '~/store/interfaces'
@@ -19,7 +20,7 @@ const levelsApiHelper = new LevelsApiHelper
   }
 })
 export default class LevelsPage extends Vue{
-  @Provide() level!: Levels
+  @ProvideReactive() level = {} as Levels
   
   layout(){
     return 'wizmi-base'
