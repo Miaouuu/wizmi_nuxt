@@ -3,11 +3,8 @@
     <NuxtLink to="/">
       Home
     </NuxtLink>
-    <NuxtLink to="/account/login">
-      Login
-    </NuxtLink>
-    <NuxtLink to="/account/register">
-      Register
+    <NuxtLink to="/levels/1">
+      Levels
     </NuxtLink>
     <NuxtLink to="/worlds">
       Worlds
