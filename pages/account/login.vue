@@ -53,9 +53,9 @@ export default class Loginpage extends Vue {
 
   submitForm () {
     if (this.validateEmail()) {
-      console.log(this.user)
+      // console.log(this.user)
     } else {
-      console.log(this.notifications)
+      // console.log(this.notifications)
     }
   }
 }

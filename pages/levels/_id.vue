@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div>Page level</div>
-    <Square />
-    {{ level }}
+  <div class="container wizmi-level-container">
+    <Square v-if="level.type === 'SQUARE'" />
   </div>
 </template>
 
@@ -43,3 +41,12 @@ export default class LevelsPage extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.wizmi-level-container{
+  display: flex;
+  flex-grow: 1;
+
+  height: 100%;
+}
+</style>

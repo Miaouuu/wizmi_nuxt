@@ -3,6 +3,9 @@
     <NuxtLink to="/">
       Home
     </NuxtLink>
+    <NuxtLink to="/levels/1">
+      Levels
+    </NuxtLink>
     <NuxtLink to="/worlds">
       Worlds
     </NuxtLink>
