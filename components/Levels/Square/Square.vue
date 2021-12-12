@@ -6,13 +6,37 @@
           <p>{{ level.worldId }} - {{ level.id }}</p>
           <p>{{ level.name }}</p>
         </div>
-        <div class="wizmi-level-options">
-          aside
-        </div>
+        <draggable
+          v-model="cardOptions"
+          :animation="200"
+          ghost-class="ghost-card"
+          group="options"
+          class="wizmi-level-options"
+        >
+          <transition-group name="options">
+            <div v-for="card in cardOptions" :key="card.id" class="wizmi-square-card">
+              {{ card.value }}
+            </div>
+          </transition-group>
+        </draggable>
       </div>
+
       <div class="flex flex-column wizmi-level-playable-area">
         <div class="wizmi-level-timeline">
-          timeline
+          <draggable
+            v-model="cardChosen"
+            :animation="200"
+            ghost-class="ghost-card"
+            group="options"
+            class="wizmi-timeline-draggable"
+          >
+            <transition-group name="timeline">
+              <div v-for="card in cardChosen" :key="card.id" class="wizmi-square-card">
+                {{ card.value }}
+              </div>
+            </transition-group>
+          </draggable>
+
           <div class="play" @click="togglePlay()">
             <img v-if="play === false" src="~/assets/icons/play-solid.svg">
             <img v-if="play === true" src="~/assets/icons/pause-solid.svg">
@@ -21,6 +45,7 @@
             <img src="~/assets/icons/trash-alt-solid.svg">
           </div>
         </div>
+
         <div class="wizmi-level-game-area">
           game-area
           {{ level }}
@@ -32,12 +57,42 @@
 
 <script lang="ts">
 import { Component, InjectReactive, Provide, Vue } from 'nuxt-property-decorator'
+import draggable from 'vuedraggable'
 import { Levels } from '~/store/interfaces'
 
-@Component
+@Component({
+  components: {
+    draggable
+  }
+})
 export default class Square extends Vue {
   @InjectReactive() level!: Levels
   @Provide() play: boolean = false
+  @Provide() cardChosen: Array<any> = [
+    {
+      id: 1,
+      value: 3,
+      direction: 'right'
+    },
+    {
+      id: 2,
+      value: 4,
+      direction: 'left'
+    }
+  ]
+
+  @Provide() cardOptions: Array<any> = [
+    {
+      id: 3,
+      value: 1,
+      direction: 'up'
+    },
+    {
+      id: 4,
+      value: 2,
+      direction: 'down'
+    }
+  ]
 
   resetTimeline () {
     return true
@@ -71,6 +126,14 @@ $topElementsHeight: 20%;
   .wizmi-level-options{
     display: flex;
     flex-grow: 1;
+
+      span{
+        display: flex;
+        flex-wrap: wrap;
+
+        width: 100%;
+        gap: 16px;
+      }
   }
 }
 
@@ -83,6 +146,18 @@ $topElementsHeight: 20%;
     height: $topElementsHeight;
     margin-bottom: $margin;
 
+    .wizmi-timeline-draggable{
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      width: 100%;
+
+      span{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+    }
     .play, .trash{
       position: absolute;
       display: flex;
@@ -115,6 +190,15 @@ $topElementsHeight: 20%;
     display: flex;
     flex-grow: 1;
   }
+}
+
+.wizmi-square-card{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75px;
+  width: 50px;
+  background-color: rgb(255, 210, 88);
 }
 
 </style>
