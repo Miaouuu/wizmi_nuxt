@@ -1,6 +1,7 @@
 <template>
   <div class="container wizmi-level-container">
-    <Square v-if="level.type === 'SQUARE'" />
+    <Square />
+    <!-- <Square v-if="level.type === 'SQUARE'" /> -->
   </div>
 </template>
 
