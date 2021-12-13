@@ -12,7 +12,7 @@
             :animation="200"
             ghost-class="ghost-card"
             group="options"
-            class="wizmi-draggable"
+            class="wizmi-draggable wizmi-draggable-column"
           >
             <transition-group name="options">
               <div v-for="movement in cardOptions" :key="movement.id" class="wizmi-square-card yellow">
@@ -31,7 +31,7 @@
             :animation="200"
             ghost-class="ghost-card"
             group="options"
-            class="wizmi-draggable"
+            class="wizmi-draggable wizmi-draggable-row"
           >
             <transition-group name="timeline">
               <div v-for="movement in cardChosen" :key="movement.id" class="wizmi-square-card yellow">
@@ -174,12 +174,11 @@ $topElementsHeight: 20%;
 
   span{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 100px;
 
     width: 100%;
     height: 100%;
-    gap: 10px;
+    gap: 16px;
 
     background-color: #ccc;
 
@@ -196,6 +195,16 @@ $topElementsHeight: 20%;
       background-color: rgb(255, 210, 88);
     }
   }
+}
+
+.wizmi-draggable-column span{
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.wizmi-draggable-row span{
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: 100px;
 
 }
 
