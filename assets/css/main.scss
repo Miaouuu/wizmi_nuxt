@@ -4,11 +4,15 @@
 body {
   height: 100%;
   min-height: 100vh;
+
   margin: 0;
+
+  font-family: "Nunito Sans", sans-serif;
+  background-color: $blue;
+  color: #fff;
 }
 
 h1 {
-  font-family: "Nunito Sans", sans-serif;
   color: $dark-blue;
 }
 
@@ -17,8 +21,10 @@ h1 {
   max-width: 1320px;
 
   margin: 0 auto;
+}
 
-  color: $blue;
+.inline-flex {
+  display: inline-flex;
 }
 
 .flex {
@@ -51,6 +57,7 @@ h1 {
 
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #fff;
 
   .wizmi-form-group {
     display: flex;
