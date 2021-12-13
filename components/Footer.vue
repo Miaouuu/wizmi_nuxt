@@ -1,5 +1,7 @@
 <template>
-  <div class="footer container" />
+  <div class="footer">
+    <div class="container" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,5 +17,6 @@ export default class Footer extends Vue {
   .footer{
     display: flex;
     margin-top: auto;
+    margin: auto 0 16px 0;
   }
 </style>

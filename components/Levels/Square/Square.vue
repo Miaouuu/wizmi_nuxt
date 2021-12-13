@@ -109,6 +109,8 @@ $topElementsHeight: 20%;
 .wizmi-level-info, .wizmi-level-options, .wizmi-level-timeline, .wizmi-level-game-area{
   // border: 2px solid $blue;
   // box-sizing: border-box;
+  padding: 16px;
+
   background-color: white;
   color: $blue;
   border-radius: 8px;
