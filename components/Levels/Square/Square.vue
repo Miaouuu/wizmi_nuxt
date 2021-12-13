@@ -84,17 +84,17 @@ export default class Square extends Vue {
     this.setOptions()
   }
 
+  setOptions () {
+    this.cardOptions = this.level.data?.actions.movements
+  }
+
   resetTimeline () {
-    return true
+    this.cardChosen = []
+    this.setOptions()
   }
 
   togglePlay () {
     this.play = !this.play
-  }
-
-  setOptions () {
-    this.cardOptions = this.level.data?.actions.movements
-    console.log(this.cardOptions)
   }
 }
 </script>
@@ -107,8 +107,10 @@ $topElementsHeight: 20%;
 
 // TODO? : Move to global css ?
 .wizmi-level-info, .wizmi-level-options, .wizmi-level-timeline, .wizmi-level-game-area{
-  border: 2px solid $blue;
-  box-sizing: border-box;
+  // border: 2px solid $blue;
+  // box-sizing: border-box;
+  background-color: white;
+  color: $blue;
   border-radius: 8px;
 }
 .wizmi-level-aside{
@@ -179,8 +181,6 @@ $topElementsHeight: 20%;
     width: 100%;
     height: 100%;
     gap: 16px;
-
-    background-color: #ccc;
 
     .wizmi-square-card{
       display: flex;
