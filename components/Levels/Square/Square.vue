@@ -15,7 +15,7 @@
             class="wizmi-draggable"
           >
             <transition-group name="options">
-              <div v-for="movement in cardOptions" :key="movement.id" class="wizmi-square-card">
+              <div v-for="movement in cardOptions" :key="movement.id" class="wizmi-square-card yellow">
                 <p>{{ movement.quantity }}</p>
                 <p>{{ movement.direction }}</p>
               </div>
@@ -34,7 +34,7 @@
             class="wizmi-draggable"
           >
             <transition-group name="timeline">
-              <div v-for="movement in cardChosen" :key="movement.id" class="wizmi-square-card">
+              <div v-for="movement in cardChosen" :key="movement.id" class="wizmi-square-card yellow">
                 <p>{{ movement.quantity }}</p>
                 <p>{{ movement.direction }}</p>
               </div>
@@ -108,6 +108,7 @@ $topElementsHeight: 20%;
 // TODO? : Move to global css ?
 .wizmi-level-info, .wizmi-level-options, .wizmi-level-timeline, .wizmi-level-game-area{
   border: 2px solid $blue;
+  box-sizing: border-box;
   border-radius: 8px;
 }
 .wizmi-level-aside{
@@ -168,24 +169,30 @@ $topElementsHeight: 20%;
 }
 
 .wizmi-draggable{
-  display: flex;
-  flex-direction: row;
   height: 100%;
   width: 100%;
+
   span{
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 100px;
 
     width: 100%;
-    gap: 16px;
+    height: 100%;
+    gap: 10px;
+
     background-color: #ccc;
 
     .wizmi-square-card{
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 75px;
-      width: 50px;
+    }
+
+    .yellow{
+      grid-column-end: span 1;
+      grid-row-end: span 1;
       background-color: rgb(255, 210, 88);
     }
   }
