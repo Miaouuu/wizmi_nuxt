@@ -17,7 +17,9 @@
             <transition-group name="options">
               <div v-for="movement in cardOptions" :key="movement.id" class="wizmi-square-card yellow">
                 <p>{{ movement.quantity }}</p>
-                <p>{{ movement.direction }}</p>
+                <div v-if="movement.direction" class="card-arrow">
+                  <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
+                </div>
               </div>
             </transition-group>
           </draggable>
@@ -36,7 +38,9 @@
             <transition-group name="timeline">
               <div v-for="movement in cardChosen" :key="movement.id" class="wizmi-square-card yellow">
                 <p>{{ movement.quantity }}</p>
-                <p>{{ movement.direction }}</p>
+                <div v-if="movement.direction" class="card-arrow">
+                  <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
+                </div>
               </div>
             </transition-group>
           </draggable>
@@ -96,6 +100,19 @@ export default class Square extends Vue {
   togglePlay () {
     this.play = !this.play
   }
+
+  getArrowRotationClass (direction: string) {
+    switch (direction) {
+      case 'up':
+        return 'arrow_up'
+      case 'down':
+        return 'arrow_down'
+      case 'right':
+        return 'arrow_right'
+      case 'left':
+        return 'arrow_left'
+    }
+  }
 }
 </script>
 
@@ -113,7 +130,7 @@ $topElementsHeight: 20%;
 
   background-color: white;
   color: $blue;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 .wizmi-level-aside{
   flex-grow: 1;
@@ -207,7 +224,22 @@ $topElementsHeight: 20%;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-auto-rows: 100px;
+}
 
+.card-arrow{
+  width: 24px;
+  height: 24px;
+}
+.arrow_up{
+  transform: rotate(270deg);
+}
+.arrow_down{
+  transform: rotate(90deg);
+}
+.arrow_right{
+  transform: rotate(0deg);
+}.arrow_left{
+  transform: rotate(180deg);
 }
 
 </style>
