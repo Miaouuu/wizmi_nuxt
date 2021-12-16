@@ -2,6 +2,9 @@
   "name": "wizmi_nuxt",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=16.13.1"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
