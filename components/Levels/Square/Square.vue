@@ -14,14 +14,12 @@
             group="options"
             class="wizmi-draggable wizmi-draggable-column"
           >
-            <transition-group name="options">
-              <div v-for="movement in cardOptions" :key="movement.id" class="wizmi-square-card yellow">
-                <p>{{ movement.quantity }}</p>
-                <div v-if="movement.direction" class="card-arrow">
-                  <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
-                </div>
+            <div v-for="movement in cardOptions" :key="movement.id" class="wizmi-square-card yellow">
+              <p>{{ movement.quantity }}</p>
+              <div v-if="movement.direction" class="card-arrow">
+                <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
               </div>
-            </transition-group>
+            </div>
           </draggable>
         </div>
       </div>
@@ -35,14 +33,12 @@
             group="options"
             class="wizmi-draggable wizmi-draggable-row"
           >
-            <transition-group name="timeline">
-              <div v-for="movement in cardChosen" :key="movement.id" class="wizmi-square-card yellow">
-                <p>{{ movement.quantity }}</p>
-                <div v-if="movement.direction" class="card-arrow">
-                  <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
-                </div>
+            <div v-for="movement in cardChosen" :key="movement.id" class="wizmi-square-card yellow">
+              <p>{{ movement.quantity }}</p>
+              <div v-if="movement.direction" class="card-arrow">
+                <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
               </div>
-            </transition-group>
+            </div>
           </draggable>
 
           <div class="play" @click="togglePlay()">
@@ -190,40 +186,39 @@ $topElementsHeight: 20%;
 }
 
 .wizmi-draggable{
-  height: 100%;
-  width: 100%;
-
-  span{
-    display: grid;
+  display: grid;
     grid-auto-rows: 100px;
 
     width: 100%;
     height: 100%;
     gap: 16px;
 
-    .wizmi-square-card{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+  .wizmi-square-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .yellow{
-      grid-column-end: span 1;
-      grid-row-end: span 1;
-      background-color: rgb(255, 210, 88);
-    }
+  .yellow{
+    grid-column-end: span 1;
+    grid-row-end: span 1;
+    background-color: rgb(255, 210, 88);
   }
 }
 
-.wizmi-draggable-column span{
+.wizmi-draggable-column {
   grid-template-columns: repeat(3, 1fr);
 }
 
-.wizmi-draggable-row span{
+.wizmi-draggable-row {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-auto-rows: 100px;
+}
+
+.ghost-card {
+  border: 1px solid red;
 }
 
 .card-arrow{
