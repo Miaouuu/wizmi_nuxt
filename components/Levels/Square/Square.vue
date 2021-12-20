@@ -3,8 +3,12 @@
     <div class="flex flex-row h-100">
       <div class="flex flex-column wizmi-level-aside">
         <div class="wizmi-level-info">
-          <p>{{ level.worldId }} - {{ level.id }}</p>
-          <p>{{ level.name }}</p>
+          <div class="wizmi-level-info--location">
+            {{ level.worldId }} - {{ level.id }}
+          </div>
+          <div class="wizmi-level-info--name">
+            {{ level.name }}
+          </div>
         </div>
         <div class="wizmi-level-options">
           <draggable
@@ -42,8 +46,8 @@
           </draggable>
 
           <div class="play" @click="togglePlay()">
-            <img v-if="play === false" src="~/assets/icons/play-solid.svg">
-            <img v-if="play === true" src="~/assets/icons/pause-solid.svg">
+            <img v-if="isPlaying === false" src="~/assets/icons/play-solid.svg">
+            <img v-else src="~/assets/icons/pause-solid.svg">
           </div>
           <div class="trash" @click="resetTimeline()">
             <img src="~/assets/icons/trash-alt-solid.svg">
@@ -51,41 +55,53 @@
         </div>
 
         <div class="wizmi-level-game-area">
-          game-area
-          {{ level }}
+          <div class="wizmi-square">
+            <div v-for="(squareRow, rowIndex) in gameGrid" :key="rowIndex" class="square-row">
+              <div
+                v-for="(squareBox, boxIndex) in squareRow"
+                :key="boxIndex"
+                class="square-box"
+                :class="squareBox === 1 ? 'full' : 'empty'"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, InjectReactive, Provide, Watch, Vue } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
-import { Levels } from '~/store/interfaces'
+import { Levels, Movements } from '~/store/interfaces'
 
 @Component({
   components: {
     draggable
   }
 })
+
 export default class Square extends Vue {
   @InjectReactive() level!: Levels
-  @Provide() play: boolean = false
-  @Provide() cardOptions: Array<any> = []
-  @Provide() cardChosen: Array<any> = []
+  @Provide() isPlaying: boolean = false
+  @Provide() cardOptions: Array<Movements> = []
+  @Provide() cardChosen: Array<Movements> = []
+  @Provide() gameGrid: Array<Array<number>> = []
 
   @Watch('level')
   onLevelChanged () {
     this.setOptions()
-  }
-
-  watch () {
-    this.setOptions()
+    this.setGrid()
   }
 
   setOptions () {
     this.cardOptions = this.level.data?.actions.movements
+  }
+
+  setGrid () {
+    this.gameGrid = this.level.data.grid
   }
 
   resetTimeline () {
@@ -94,7 +110,7 @@ export default class Square extends Vue {
   }
 
   togglePlay () {
-    this.play = !this.play
+    this.isPlaying = !this.isPlaying
   }
 
   getArrowRotationClass (direction: string) {
@@ -135,6 +151,13 @@ $topElementsHeight: 20%;
   .wizmi-level-info{
     height: $topElementsHeight;
     margin-bottom: $margin;
+
+    .wizmi-level-info--location{
+      font-size: 32px;
+    }
+    .wizmi-level-info--name{
+      font-size: 24px;
+    }
   }
   .wizmi-level-options{
     display: flex;
@@ -182,6 +205,26 @@ $topElementsHeight: 20%;
   .wizmi-level-game-area{
     display: flex;
     flex-grow: 1;
+
+    .wizmi-square {
+      display: flex;
+      flex-direction: column;
+      margin: auto auto;
+      .square-row{
+        display:flex;
+        flex-direction: row;
+        height: 80px;
+
+        .square-box{
+          width: 80px;
+          height: 100%;
+          border: 1px solid $blue;
+        }
+        .full{
+          background-color: $blue;
+        }
+      }
+    }
   }
 }
 
