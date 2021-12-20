@@ -1,0 +1,10 @@
+version: '3.19'
+services:
+  wizmi_nuxt:
+    build: .
+    image: wizmi_nuxt
+    command: npm run start
+    environment:
+      - NUXT_HOST=0.0.0.0
+    ports:
+      - "3000:3000"
