@@ -1,0 +1,26 @@
+name: prod
+
+on: 
+  push: 
+    branches: 
+      - main
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v2
+
+      - name: "Install Node"
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: "Install dependencies"
+        run: npm install
+
+      - name: Run linter
+        run: npm run lint
