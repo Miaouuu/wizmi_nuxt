@@ -56,9 +56,16 @@
 
         <div class="wizmi-level-game-area">
           <div class="wizmi-square">
-            <div v-for="(squareRow, rowIndex) in gameGrid" :key="rowIndex" class="square-row">
+            <div id="player" class="wizmi-player" />
+            <div
+              v-for="(squareRow, rowIndex) in gameGrid"
+              :id="`r-${squareRow}`"
+              :key="rowIndex"
+              class="square-row"
+            >
               <div
                 v-for="(squareBox, boxIndex) in squareRow"
+                :id="`r-${rowIndex}-b-${squareBox}`"
                 :key="boxIndex"
                 class="square-box"
                 :class="squareBox === 1 ? 'full' : 'empty'"
@@ -69,11 +76,10 @@
       </div>
     </div>
   </div>
-  </div>
 </template>
 
 <script lang="ts">
-import { Component, InjectReactive, Provide, Watch, Vue } from 'nuxt-property-decorator'
+import { Component, InjectReactive, Watch, Vue } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
 import { Levels, Movements } from '~/store/interfaces'
 
@@ -85,10 +91,11 @@ import { Levels, Movements } from '~/store/interfaces'
 
 export default class Square extends Vue {
   @InjectReactive() level!: Levels
-  @Provide() isPlaying: boolean = false
-  @Provide() cardOptions: Array<Movements> = []
-  @Provide() cardChosen: Array<Movements> = []
-  @Provide() gameGrid: Array<Array<number>> = []
+  private isPlaying: boolean = false
+  private cardOptions: Array<Movements> = []
+  private cardChosen: Array<Movements> = []
+  private gameGrid: Array<Array<number>> = []
+  private playerPosition: Array<number> = []
 
   @Watch('level')
   onLevelChanged () {
@@ -101,7 +108,28 @@ export default class Square extends Vue {
   }
 
   setGrid () {
-    this.gameGrid = this.level.data.grid
+    if (this.level.data.grid) {
+      console.log('grid is loaded')
+      this.gameGrid = this.level.data.grid
+      this.setPlayerPosition(this.level.data.start[0], this.level.data.start[1])
+    }
+  }
+
+  setPlayerPosition (newX: number, newY: number) {
+    this.playerPosition = [newX, newY]
+    this.movePlayerToHisPosition()
+  }
+
+  movePlayerToHisPosition () {
+    const fragment = document.createDocumentFragment()
+    const player = document.getElementById('player')
+    const targetBoxId = 'r-' + this.playerPosition[0] + '-b-' + this.playerPosition[1]
+
+    if (document.getElementById(targetBoxId)) {
+      console.log(targetBoxId)
+      if (player) { fragment.appendChild(player) }
+      document.getElementById(targetBoxId)?.appendChild(fragment)
+    }
   }
 
   resetTimeline () {
@@ -111,6 +139,7 @@ export default class Square extends Vue {
 
   togglePlay () {
     this.isPlaying = !this.isPlaying
+    this.movePlayerToHisPosition()
   }
 
   getArrowRotationClass (direction: string) {
@@ -206,6 +235,15 @@ $topElementsHeight: 20%;
     display: flex;
     flex-grow: 1;
 
+    .wizmi-player{
+      display: none;
+      width: 15px;
+      height: 15px;
+      background-color: red;
+      border-radius: 50%;
+      z-index: 1000;
+    }
+
     .wizmi-square {
       display: flex;
       flex-direction: column;
@@ -213,12 +251,17 @@ $topElementsHeight: 20%;
       .square-row{
         display:flex;
         flex-direction: row;
-        height: 80px;
-
+        height: 60px;
         .square-box{
-          width: 80px;
+          display:flex;
+          justify-content: center;
+          align-items: center;
+          width: 60px;
           height: 100%;
           border: 1px solid $blue;
+          .wizmi-player{
+            display: block;
+          }
         }
         .full{
           background-color: $blue;
