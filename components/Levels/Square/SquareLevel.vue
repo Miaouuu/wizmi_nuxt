@@ -118,6 +118,7 @@ export default class SquareLevel extends Vue {
 
   setPlayerPosition (newX: number, newY: number) {
     this.playerPosition = [newX, newY]
+    console.log(this.playerPosition, 'player position')
     this.movePlayerToHisPosition()
   }
 
@@ -139,6 +140,7 @@ export default class SquareLevel extends Vue {
     responses: (Movement | Condition | Loop)[]
   ) {
   // INIT
+    console.log(responses)
     let player = square.start
     const { movements, conditions, loops } = square.actions
     let { doors, ennemies } = square.triggers
@@ -287,7 +289,7 @@ export default class SquareLevel extends Vue {
             }
           )
         }
-        console.log(player)
+        console.log('ircjbreiob')
         this.setPlayerPosition(player[0], player[1])
         actualAction += 1
         continue
@@ -307,8 +309,9 @@ export default class SquareLevel extends Vue {
   }
 
   togglePlay () {
+    console.log('toggleplay')
     this.isPlaying = !this.isPlaying
-    this.movePlayerToHisPosition()
+    this.squareResolver(this.level.data, this.cardChosen)
   }
 
   getArrowRotationClass (direction: string) {
