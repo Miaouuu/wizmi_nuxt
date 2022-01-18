@@ -68,7 +68,7 @@
                 :id="`r-${rowIndex}-b-${boxIndex}`"
                 :key="boxIndex"
                 class="square-box"
-                :class="squareBox === 1 ? 'full' : 'empty'"
+                :class="{'full' : squareBox === 1, 'empty' : squareBox !== 1, 'end': rowIndex === level.data.end[0] && boxIndex === level.data.end[1]}"
               />
             </div>
           </div>
@@ -97,6 +97,7 @@ export default class SquareLevel extends Vue {
   public cardChosen: Array<Movement> = []
   public gameGrid: Array<Array<number>> = []
   public playerPosition: Array<number> = []
+  public playerActionsQueue: Array<Array<number>> = []
 
   @Watch('level')
   onLevelChanged () {
@@ -110,27 +111,42 @@ export default class SquareLevel extends Vue {
 
   setGrid () {
     if (this.level.data.grid) {
-      console.log('grid is loaded')
       this.gameGrid = this.level.data.grid
-      this.setPlayerPosition(this.level.data.start[0], this.level.data.start[1])
+      this.playerPosition = this.level.data.start
+      this.movePlayerToHisPosition()
+    }
+  }
+
+  sleep (ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  async startPlayerActionsQueue () {
+    for (const position of this.playerActionsQueue) {
+      this.setPlayerPosition(position[0], position[1])
+      console.log('i')
+      await this.sleep(300)
     }
   }
 
   setPlayerPosition (newX: number, newY: number) {
     this.playerPosition = [newX, newY]
-    console.log(this.playerPosition, 'player position')
     this.movePlayerToHisPosition()
   }
 
   movePlayerToHisPosition () {
-    const fragment = document.createDocumentFragment()
     const player = document.getElementById('player')
     const targetBoxId = 'r-' + this.playerPosition[0] + '-b-' + this.playerPosition[1]
-
-    if (document.getElementById(targetBoxId)) {
-      console.log(targetBoxId)
-      if (player) { fragment.appendChild(player) }
-      document.getElementById(targetBoxId)?.appendChild(fragment)
+    const targetBoxElement = document.getElementById(targetBoxId)
+    if (targetBoxElement) {
+      const centerX = targetBoxElement.offsetLeft + (targetBoxElement.offsetWidth / 2)
+      const centerY = targetBoxElement.offsetTop + (targetBoxElement.offsetHeight / 2)
+      console.log(targetBoxElement)
+      if (player) {
+        const posLeft = centerX - (player.offsetWidth / 2)
+        const posTop = centerY - (player.offsetHeight / 2)
+        player.style.transform = 'translate(' + posLeft + 'px, ' + posTop + 'px)'
+      }
     }
   }
 
@@ -289,8 +305,7 @@ export default class SquareLevel extends Vue {
             }
           )
         }
-        console.log('ircjbreiob')
-        this.setPlayerPosition(player[0], player[1])
+        this.playerActionsQueue.push([player[0], player[1]])
         actualAction += 1
         continue
       }
@@ -300,16 +315,21 @@ export default class SquareLevel extends Vue {
     if (JSON.stringify(player) !== JSON.stringify(square.end)) {
       return false
     }
+    this.startPlayerActionsQueue()
     return true
   };
 
   resetTimeline () {
     this.cardChosen = []
+    this.playerActionsQueue = []
+
+    this.playerPosition = this.level.data.start
+    this.movePlayerToHisPosition()
+
     this.setOptions()
   }
 
   togglePlay () {
-    console.log('toggleplay')
     this.isPlaying = !this.isPlaying
     this.squareResolver(this.level.data, this.cardChosen)
   }
@@ -406,35 +426,39 @@ $topElementsHeight: 20%;
   .wizmi-level-game-area{
     display: flex;
     flex-grow: 1;
-
-    .wizmi-player{
-      display: none;
-      width: 15px;
-      height: 15px;
-      background-color: red;
-      border-radius: 50%;
-      z-index: 1000;
-    }
-
     .wizmi-square {
+      position: relative;
       display: flex;
       flex-direction: column;
       margin: auto auto;
+      .wizmi-player{
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background-color: red;
+        border-radius: 50%;
+        z-index: 1000;
+        transition: transform 0.3s;
+      }
+
       .square-row{
         display:flex;
         flex-direction: row;
-        height: 60px;
+        height: 64px;
+        box-sizing: border-box;
         .square-box{
           display:flex;
           justify-content: center;
           align-items: center;
-          width: 60px;
+          width: 64px;
           height: 100%;
           border: 1px solid $blue;
-          .wizmi-player{
-            display: block;
-          }
+          box-sizing: border-box;
+
         }
+        .end{
+            background-color: limegreen;
+          }
         .full{
           background-color: $blue;
         }
