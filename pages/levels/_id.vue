@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Component, ProvideReactive, Vue } from 'nuxt-property-decorator'
-import Square from '../../components/Levels/Square/Square.vue'
+import Square from '../../components/Levels/Square/SquareLevel.vue'
 import LevelsApiHelper from '~/plugins/api/levels'
 import { Levels } from '~/store/interfaces'
 

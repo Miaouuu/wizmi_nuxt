@@ -59,13 +59,13 @@
             <div id="player" class="wizmi-player" />
             <div
               v-for="(squareRow, rowIndex) in gameGrid"
-              :id="`r-${squareRow}`"
+              :id="`r-${rowIndex}`"
               :key="rowIndex"
               class="square-row"
             >
               <div
                 v-for="(squareBox, boxIndex) in squareRow"
-                :id="`r-${rowIndex}-b-${squareBox}`"
+                :id="`r-${rowIndex}-b-${boxIndex}`"
                 :key="boxIndex"
                 class="square-box"
                 :class="squareBox === 1 ? 'full' : 'empty'"
@@ -81,7 +81,8 @@
 <script lang="ts">
 import { Component, InjectReactive, Watch, Vue } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
-import { Levels, Movements } from '~/store/interfaces'
+import { changePlayerPosition, Condition, directionValue, isInside, Loop, Movement, Square, Items } from 'wizmi'
+import { Levels } from '~/store/interfaces'
 
 @Component({
   components: {
@@ -89,13 +90,13 @@ import { Levels, Movements } from '~/store/interfaces'
   }
 })
 
-export default class Square extends Vue {
+export default class SquareLevel extends Vue {
   @InjectReactive() level!: Levels
-  private isPlaying: boolean = false
-  private cardOptions: Array<Movements> = []
-  private cardChosen: Array<Movements> = []
-  private gameGrid: Array<Array<number>> = []
-  private playerPosition: Array<number> = []
+  public isPlaying: boolean = false
+  public cardOptions: Array<Movement> = []
+  public cardChosen: Array<Movement> = []
+  public gameGrid: Array<Array<number>> = []
+  public playerPosition: Array<number> = []
 
   @Watch('level')
   onLevelChanged () {
@@ -104,7 +105,7 @@ export default class Square extends Vue {
   }
 
   setOptions () {
-    this.cardOptions = this.level.data?.actions.movements
+    this.cardOptions = this.level.data?.actions?.movements
   }
 
   setGrid () {
@@ -131,6 +132,174 @@ export default class Square extends Vue {
       document.getElementById(targetBoxId)?.appendChild(fragment)
     }
   }
+
+  // TODO : Clean to wizmi dep
+  squareResolver (
+    square: Square,
+    responses: (Movement | Condition | Loop)[]
+  ) {
+  // INIT
+    let player = square.start
+    const { movements, conditions, loops } = square.actions
+    let { doors, ennemies } = square.triggers
+    let { keys, swords } = square.items
+    const totalActions = movements.length + conditions.length + loops.length
+    if (totalActions !== responses.length) {
+      return false
+    }
+    // LOOP TO START THE GAME
+    let actualAction = 0
+    let actionResponseLoop: Loop = {
+      id: 0,
+      condition: 0,
+      block: 0
+    }
+    const actionLoop: Loop = {
+      id: 0,
+      condition: 0,
+      block: 0
+    }
+    let initActionLoop = 0
+
+    while (actualAction < responses.length) {
+      let triggerOn: Items
+      let blocked = false
+      let response
+      if (actionLoop.condition < actionResponseLoop.condition) {
+        if (actionLoop.block === actionResponseLoop.block) {
+          actionLoop.condition += 1
+          actionLoop.block = 0
+        }
+        if (actionLoop.block < actionResponseLoop.block) {
+          actionLoop.block += 1
+        }
+        response = responses[initActionLoop + actionLoop.block]
+        actualAction = initActionLoop
+      } else {
+        response = responses[actualAction]
+      }
+      if (actionLoop.condition === actionResponseLoop.condition &&
+      actionLoop.block === actionResponseLoop.block &&
+      actionResponseLoop.condition !== 0) {
+        actionResponseLoop.condition = 0
+        actualAction = initActionLoop + actionResponseLoop.block + 1
+        response = responses[actualAction]
+      }
+      if (!response) {
+        actualAction += 1
+        continue
+      }
+      keys = keys.map((key) => {
+        if (key.position[0] === player[0] && key.position[1] === player[1]) {
+          return {
+            ...key,
+            taken: true
+          }
+        }
+        return key
+      })
+      swords = swords.map((sword) => {
+        if (sword.position[0] === player[0] && sword.position[1] === player[1]) {
+          return {
+            ...sword,
+            taken: true
+          }
+        }
+        return sword
+      })
+      // ! PERMET PAS DE GERER PLUSIEURS ITEM EN MEME TEMPS && NOT REUSABLE
+      const isCondition = isInside(response, conditions)
+      if (isCondition) {
+        const condition = response as Condition
+        if (condition.action === Items.Key) {
+          const hasKey = keys.findIndex(key => key.taken)
+          if (hasKey > -1) {
+            keys.slice(hasKey, 1)
+            triggerOn = Items.Key
+          }
+        } else if (condition.action === Items.Sword) {
+          const hasSword = keys.findIndex(sword => sword.taken)
+          if (hasSword > -1) {
+            keys.slice(hasSword, 1)
+            triggerOn = Items.Sword
+          }
+        }
+      }
+
+      doors = doors.map((door) => {
+        if (door.position[0] === player[0] && door.position[1] === player[1] && !blocked) {
+          if (!door.open) {
+            if (door.needKey) {
+              if (triggerOn === Items.Key) {
+                return {
+                  ...door,
+                  open: true
+                }
+              }
+              blocked = true
+            }
+          }
+        }
+        return door
+      })
+
+      // ! NE PEUT PAS BOUGER POUR L'INSTANT
+      ennemies = ennemies.map((ennemy) => {
+        if (ennemy.position[0] === player[0] && ennemy.position[1] === player[1] && !blocked) {
+          if (!ennemy.dead) {
+            if (ennemy.needSword) {
+              blocked = triggerOn !== Items.Sword
+              if (blocked) {
+                return {
+                  ...ennemy,
+                  open: true
+                }
+              }
+            }
+          }
+        }
+        return ennemy
+      })
+      if (blocked) {
+        actualAction += 1
+        continue
+      }
+      const isLoop = isInside(response, loops)
+      // ! PERMET PAS DE FAIRE DES LOOP DANS DES LOOP
+      if (isLoop) {
+        const loop = response as Loop
+        initActionLoop = actualAction
+        actionResponseLoop = loop
+        continue
+      }
+      const isMovement = isInside(response, movements)
+      if (isMovement) {
+        const movement = response as Movement
+        const direction = directionValue(movement.direction)
+        for (let i = 0; i < movement.quantity; i += 1) {
+          player = changePlayerPosition(
+            direction,
+            {
+              start: player,
+              shape: square.shape,
+              grid: square.grid,
+              infinity: square.infinity
+            }
+          )
+        }
+        console.log(player)
+        this.setPlayerPosition(player[0], player[1])
+        actualAction += 1
+        continue
+      }
+      actualAction += 1
+    }
+    // END
+    if (JSON.stringify(player) !== JSON.stringify(square.end)) {
+      return false
+    }
+    return true
+  };
 
   resetTimeline () {
     this.cardChosen = []

@@ -1,16 +1,12 @@
 // TODO : CLEAN
+import { Movement } from 'wizmi'
+
 export enum NotificationTypes{
   Error = 'error'
 }
 export interface Notification{
   type: NotificationTypes,
   message: string
-}
-
-export interface Movements{
-  id: number,
-  direction: string,
-  quantity: string
 }
 
 export interface Levels{
@@ -28,7 +24,7 @@ export interface Levels{
     grid: Array<Array<number>>,
     infinity: boolean,
     actions: {
-      movements: Array<Movements>,
+      movements: Array<Movement>,
       conditions: [],
       loops: []
     },

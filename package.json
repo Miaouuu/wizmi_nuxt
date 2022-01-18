@@ -20,7 +20,7 @@
     "nuxt": "^2.15.7",
     "nuxt-property-decorator": "^2.9.1",
     "vuedraggable": "^2.24.3",
-    "wizmi": "^0.0.4"
+    "wizmi": "^0.0.8"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",
