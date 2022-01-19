@@ -18,6 +18,7 @@
             'previous-active' : levelIndex === selectedLevel - 1 && worldIndex === selectedWorld
           }"
         >
+          <a :href="`/levels/${level.id}`" class="full-width-link" />
           {{ world.name }}<br>{{ level.name }}
         </div>
       </div>
