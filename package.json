@@ -1,6 +1,6 @@
 {
   "name": "wizmi_nuxt",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Wizmi Nuxt - Built in NuxtJS",
   "keywords": ["learning", "wizmi", "nuxt"],
   "homepage": "https://github.com/Miaouuu/wizmi_nuxt",
@@ -25,7 +25,7 @@
     "nuxt": "^2.15.7",
     "nuxt-property-decorator": "^2.9.1",
     "vuedraggable": "^2.24.3",
-    "wizmi": "^0.0.9"
+    "wizmi": "latest"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",
