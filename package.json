@@ -1,7 +1,10 @@
 {
   "name": "wizmi_nuxt",
-  "version": "1.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "description": "Wizmi Nuxt - Built in NuxtJS",
+  "keywords": ["learning", "wizmi", "nuxt"],
+  "homepage": "https://github.com/Miaouuu/wizmi_nuxt",
+  "private": "true",
   "engines": {
     "node": ">=16.13.1"
   },
@@ -13,6 +16,8 @@
     "format": "eslint --ext .ts,.js,.vue . --fix",
     "prepare": "husky install"
   },
+  "author": "Ruben",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "@nuxtjs/pwa": "^3.3.5",
     "axios": "^0.24.0",
