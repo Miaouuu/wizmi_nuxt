@@ -344,8 +344,6 @@ export default class SquareLevel extends Vue {
   }
 
   togglePlay () {
-    this.isShowingCardChosenLengthError = false
-
     this.isPlaying = !this.isPlaying
     this.squareResolver(this.level.data, this.cardChosen)
   }

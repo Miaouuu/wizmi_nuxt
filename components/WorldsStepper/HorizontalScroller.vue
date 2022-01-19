@@ -15,7 +15,7 @@
           class="wizmi-worlds-item"
           :class="{
             'active' : levelIndex === selectedLevel && worldIndex === selectedWorld,
-            'previous-active' : levelIndex === selectedLevel - 1 && worldIndex === selectedWorld
+            'previous-active' : levelIndex === (selectedLevel - 1) && worldIndex === selectedWorld
           }"
         >
           <a :href="`/levels/${level.id}`" class="full-width-link" />
