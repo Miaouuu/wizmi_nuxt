@@ -45,9 +45,6 @@
             </div>
           </draggable>
 
-          <div v-if="isShowingCardChosenLengthError" class="timeline-errors">
-            Veuillez ajouter toutes les cartes pour pouvoir lancer la timeline
-          </div>
           <div class="play" @click="togglePlay()">
             <img v-if="isPlaying === false" src="~/assets/icons/play-solid.svg">
             <img v-else src="~/assets/icons/pause-solid.svg">
@@ -97,7 +94,6 @@ export default class SquareLevel extends Vue {
   public isPlaying: boolean = false
   public cardOptions: Array<Movement> = []
   public cardChosen: Array<Movement> = []
-  public isShowingCardChosenLengthError: boolean = false
   public gameGrid: Array<Array<number>> = []
   public playerPosition: Array<number> = []
   public playerActionsQueue: Array<Array<number>> = []
@@ -400,10 +396,6 @@ $topElementsHeight: 20%;
     position: relative;
     height: $topElementsHeight;
     margin-bottom: $margin;
-    .timeline-errors{
-      bottom: 10px;
-      position: absolute;
-    }
     .play, .trash{
       position: absolute;
       display: flex;
