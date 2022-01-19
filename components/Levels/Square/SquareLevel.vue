@@ -18,7 +18,7 @@
             group="options"
             class="wizmi-draggable wizmi-draggable-column"
           >
-            <div v-for="(movement, index) in cardOptions" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('options', movement, index)">
+            <div v-for="(movement, index) in cardOptions" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('options', index)">
               <div v-if="movement.direction" class="card-arrow">
                 <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
               </div>
@@ -39,7 +39,7 @@
             group="options"
             class="wizmi-draggable wizmi-draggable-row"
           >
-            <div v-for="(movement, index) in cardChosen" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('chosen', movement, index)">
+            <div v-for="(movement, index) in cardChosen" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('chosen', index)">
               <div v-if="movement.direction" class="card-arrow">
                 <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
               </div>
@@ -109,7 +109,7 @@ export default class SquareLevel extends Vue {
   }
 
   setOptions () {
-    this.cardOptions = this.level.data?.actions?.movements
+    this.cardOptions = [...this.level.data?.actions?.movements]
   }
 
   setGrid () {
@@ -120,14 +120,21 @@ export default class SquareLevel extends Vue {
     }
   }
 
-  toggleCard (array: string, card: Movement, index: number) {
+  toggleCard (array: string, index: number) {
     if (array === 'chosen') {
+      const card = this.cardChosen[index]
       this.cardChosen.splice(index, 1)
       this.cardOptions.push(card)
     } else {
+      const card = this.cardOptions[index]
       this.cardOptions.splice(index, 1)
       this.cardChosen.push(card)
     }
+  }
+
+  togglePlay () {
+    this.isPlaying = !this.isPlaying
+    this.squareResolver(this.level.data, this.cardChosen)
   }
 
   sleep (ms: number) {
@@ -136,9 +143,10 @@ export default class SquareLevel extends Vue {
 
   async startPlayerActionsQueue () {
     if (this.isPlaying) {
+      await this.resetPlayerToInitialPosition()
       for (const position of this.playerActionsQueue) {
         this.setPlayerPosition(position[0], position[1])
-        await this.sleep(300)
+        await this.sleep(400)
       }
     }
     this.isPlaying = false
@@ -163,6 +171,21 @@ export default class SquareLevel extends Vue {
         player.style.transform = 'translate(' + posLeft + 'px, ' + posTop + 'px)'
       }
     }
+  }
+
+  resetTimeline () {
+    this.cardChosen = []
+    this.playerActionsQueue = []
+
+    this.setOptions()
+
+    this.resetPlayerToInitialPosition()
+  }
+
+  async resetPlayerToInitialPosition () {
+    this.playerPosition = this.level.data.start
+    this.movePlayerToHisPosition()
+    await this.sleep(500)
   }
 
   // TODO : Clean to wizmi dep
@@ -332,21 +355,6 @@ export default class SquareLevel extends Vue {
     }
     return true
   };
-
-  resetTimeline () {
-    this.cardChosen = []
-    this.playerActionsQueue = []
-
-    this.playerPosition = this.level.data.start
-    this.movePlayerToHisPosition()
-
-    this.setOptions()
-  }
-
-  togglePlay () {
-    this.isPlaying = !this.isPlaying
-    this.squareResolver(this.level.data, this.cardChosen)
-  }
 
   getArrowRotationClass (direction: string) {
     switch (direction) {
