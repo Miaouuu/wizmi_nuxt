@@ -81,8 +81,7 @@
 <script lang="ts">
 import { Component, InjectReactive, Watch, Vue } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
-import { changePlayerPosition, Condition, directionValue, isInside, Loop, Movement, Square, Items } from 'wizmi'
-import { Levels } from '~/store/interfaces'
+import { changePlayerPosition, Condition, directionValue, isInside, Loop, Movement, Square, Items, Levels } from 'wizmi'
 
 @Component({
   components: {

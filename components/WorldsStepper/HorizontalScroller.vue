@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
-import { Worlds } from '~/store/interfaces'
+import { Worlds } from 'wizmi'
 
 @Component
 export default class HorizontalScroller extends Vue {
