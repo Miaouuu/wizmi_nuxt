@@ -132,9 +132,12 @@ export default class SquareLevel extends Vue {
     }
   }
 
-  togglePlay () {
+  async togglePlay () {
     this.isPlaying = !this.isPlaying
-    this.squareResolver(this.level.data, this.cardChosen)
+    const levelFinished = await this.squareResolver(this.level.data, this.cardChosen)
+    if (levelFinished) {
+      window.location.href = '/levels/' + (this.level.id + 1)
+    }
   }
 
   sleep (ms: number) {
@@ -189,7 +192,7 @@ export default class SquareLevel extends Vue {
   }
 
   // TODO : Clean to wizmi dep
-  squareResolver (
+  async squareResolver (
     square: Square,
     responses: (Movement | Condition | Loop)[]
   ) {
@@ -349,7 +352,7 @@ export default class SquareLevel extends Vue {
       actualAction += 1
     }
     // END
-    this.startPlayerActionsQueue()
+    await this.startPlayerActionsQueue()
     if (JSON.stringify(player) !== JSON.stringify(square.end)) {
       return false
     }
