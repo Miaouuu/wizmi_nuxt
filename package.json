@@ -1,7 +1,10 @@
 {
   "name": "wizmi_nuxt",
-  "version": "1.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "description": "Wizmi Nuxt - Built in NuxtJS",
+  "keywords": ["learning", "wizmi", "nuxt"],
+  "homepage": "https://github.com/Miaouuu/wizmi_nuxt",
+  "private": "true",
   "engines": {
     "node": ">=16.13.1"
   },
@@ -13,6 +16,8 @@
     "format": "eslint --ext .ts,.js,.vue . --fix",
     "prepare": "husky install"
   },
+  "author": "Ruben",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "@nuxtjs/pwa": "^3.3.5",
     "axios": "^0.24.0",
@@ -20,7 +25,7 @@
     "nuxt": "^2.15.7",
     "nuxt-property-decorator": "^2.9.1",
     "vuedraggable": "^2.24.3",
-    "wizmi": "^0.0.4"
+    "wizmi": "^0.0.9"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

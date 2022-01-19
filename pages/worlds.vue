@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Component, Provide, Vue } from 'nuxt-property-decorator'
-import { Worlds } from '~/store/interfaces'
+import { Worlds } from 'wizmi'
 import WorldsStepper from '@/components/WorldsStepper/WorldsStepper.vue'
 import WorldsApiHelper from '~/plugins/api/worlds'
 

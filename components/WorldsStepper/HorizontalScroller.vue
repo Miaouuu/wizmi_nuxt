@@ -15,9 +15,10 @@
           class="wizmi-worlds-item"
           :class="{
             'active' : levelIndex === selectedLevel && worldIndex === selectedWorld,
-            'previous-active' : levelIndex === selectedLevel - 1 && worldIndex === selectedWorld
+            'previous-active' : levelIndex === (selectedLevel - 1) && worldIndex === selectedWorld
           }"
         >
+          <a :href="`/levels/${level.id}`" class="full-width-link" />
           {{ world.name }}<br>{{ level.name }}
         </div>
       </div>
@@ -27,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
-import { Worlds } from '~/store/interfaces'
+import { Worlds } from 'wizmi'
 
 @Component
 export default class HorizontalScroller extends Vue {
