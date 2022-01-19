@@ -45,6 +45,9 @@
             </div>
           </draggable>
 
+          <div v-if="isShowingCardChosenLengthError" class="timeline-errors">
+            Veuillez ajouter toutes les cartes pour pouvoir lancer la timeline
+          </div>
           <div class="play" @click="togglePlay()">
             <img v-if="isPlaying === false" src="~/assets/icons/play-solid.svg">
             <img v-else src="~/assets/icons/pause-solid.svg">
@@ -94,6 +97,7 @@ export default class SquareLevel extends Vue {
   public isPlaying: boolean = false
   public cardOptions: Array<Movement> = []
   public cardChosen: Array<Movement> = []
+  public isShowingCardChosenLengthError: boolean = false
   public gameGrid: Array<Array<number>> = []
   public playerPosition: Array<number> = []
   public playerActionsQueue: Array<Array<number>> = []
@@ -121,11 +125,14 @@ export default class SquareLevel extends Vue {
   }
 
   async startPlayerActionsQueue () {
-    for (const position of this.playerActionsQueue) {
-      this.setPlayerPosition(position[0], position[1])
-      console.log('i')
-      await this.sleep(300)
+    if (this.isPlaying) {
+      for (const position of this.playerActionsQueue) {
+        this.setPlayerPosition(position[0], position[1])
+        await this.sleep(300)
+      }
     }
+    this.isPlaying = false
+    this.playerActionsQueue = []
   }
 
   setPlayerPosition (newX: number, newY: number) {
@@ -140,7 +147,6 @@ export default class SquareLevel extends Vue {
     if (targetBoxElement) {
       const centerX = targetBoxElement.offsetLeft + (targetBoxElement.offsetWidth / 2)
       const centerY = targetBoxElement.offsetTop + (targetBoxElement.offsetHeight / 2)
-      console.log(targetBoxElement)
       if (player) {
         const posLeft = centerX - (player.offsetWidth / 2)
         const posTop = centerY - (player.offsetHeight / 2)
@@ -155,15 +161,14 @@ export default class SquareLevel extends Vue {
     responses: (Movement | Condition | Loop)[]
   ) {
   // INIT
-    console.log(responses)
     let player = square.start
     const { movements, conditions, loops } = square.actions
     let { doors, ennemies } = square.triggers
     let { keys, swords } = square.items
-    const totalActions = movements.length + conditions.length + loops.length
-    if (totalActions !== responses.length) {
-      return false
-    }
+    // const totalActions = movements.length + conditions.length + loops.length
+    // if (totalActions !== responses.length) {
+    //   return false
+    // }
     // LOOP TO START THE GAME
     let actualAction = 0
     let actionResponseLoop: Loop = {
@@ -311,10 +316,10 @@ export default class SquareLevel extends Vue {
       actualAction += 1
     }
     // END
+    this.startPlayerActionsQueue()
     if (JSON.stringify(player) !== JSON.stringify(square.end)) {
       return false
     }
-    this.startPlayerActionsQueue()
     return true
   };
 
@@ -329,6 +334,8 @@ export default class SquareLevel extends Vue {
   }
 
   togglePlay () {
+    this.isShowingCardChosenLengthError = false
+
     this.isPlaying = !this.isPlaying
     this.squareResolver(this.level.data, this.cardChosen)
   }
@@ -393,7 +400,10 @@ $topElementsHeight: 20%;
     position: relative;
     height: $topElementsHeight;
     margin-bottom: $margin;
-
+    .timeline-errors{
+      bottom: 10px;
+      position: absolute;
+    }
     .play, .trash{
       position: absolute;
       display: flex;
