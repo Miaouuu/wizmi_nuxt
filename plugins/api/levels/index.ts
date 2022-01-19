@@ -1,6 +1,6 @@
 import axios from 'axios'
+import { Levels } from 'wizmi'
 import ApiHelper from '..'
-import { Levels } from '~/store/interfaces'
 
 export default class LevelsApiHelper extends ApiHelper {
   async getLevels (): Promise<Levels[]> {

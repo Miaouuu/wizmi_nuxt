@@ -1,6 +1,6 @@
 import axios from 'axios'
+import { Worlds } from 'wizmi'
 import ApiHelper from '..'
-import { Worlds } from '~/store/interfaces'
 
 export default class WorldsApiHelper extends ApiHelper {
   async getWorlds (): Promise<Worlds[]> {

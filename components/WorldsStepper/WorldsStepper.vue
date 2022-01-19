@@ -7,8 +7,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { Worlds } from 'wizmi'
 import HorizontalScroller from './HorizontalScroller.vue'
-import { Worlds } from '~/store/interfaces'
 
 @Component({
   components: {
