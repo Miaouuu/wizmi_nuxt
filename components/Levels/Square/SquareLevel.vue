@@ -18,11 +18,13 @@
             group="options"
             class="wizmi-draggable wizmi-draggable-column"
           >
-            <div v-for="movement in cardOptions" :key="movement.id" class="wizmi-square-card yellow">
-              <p>{{ movement.quantity }}</p>
+            <div v-for="(movement, index) in cardOptions" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('options', movement, index)">
               <div v-if="movement.direction" class="card-arrow">
                 <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
               </div>
+              <p class="m-0">
+                {{ movement.quantity }}
+              </p>
             </div>
           </draggable>
         </div>
@@ -37,11 +39,13 @@
             group="options"
             class="wizmi-draggable wizmi-draggable-row"
           >
-            <div v-for="movement in cardChosen" :key="movement.id" class="wizmi-square-card yellow">
-              <p>{{ movement.quantity }}</p>
+            <div v-for="(movement, index) in cardChosen" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('chosen', movement, index)">
               <div v-if="movement.direction" class="card-arrow">
                 <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
               </div>
+              <p class="m-0">
+                {{ movement.quantity }}
+              </p>
             </div>
           </draggable>
 
@@ -113,6 +117,16 @@ export default class SquareLevel extends Vue {
       this.gameGrid = this.level.data.grid
       this.playerPosition = this.level.data.start
       this.movePlayerToHisPosition()
+    }
+  }
+
+  toggleCard (array: string, card: Movement, index: number) {
+    if (array === 'chosen') {
+      this.cardChosen.splice(index, 1)
+      this.cardOptions.push(card)
+    } else {
+      this.cardOptions.splice(index, 1)
+      this.cardChosen.push(card)
     }
   }
 
@@ -479,8 +493,9 @@ $topElementsHeight: 20%;
   .wizmi-square-card{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+    cursor: pointer;
   }
 
   .yellow{
