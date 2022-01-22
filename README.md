@@ -5,6 +5,14 @@
 
 Wizmi Web App built in NuxtJS
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+```bash
+cat .env.example > .env
+```
+
 ## Tech Stack
 
 [NodeJS](https://nodejs.org/en/download/) `>=16.13.1`
