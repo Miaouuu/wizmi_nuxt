@@ -9,9 +9,6 @@
 import { Component, ProvideReactive, Vue } from 'nuxt-property-decorator'
 import { Levels } from 'wizmi'
 import Square from '../../components/Levels/Square/SquareLevel.vue'
-import LevelsApiHelper from '~/plugins/api/levels'
-
-const levelsApiHelper = new LevelsApiHelper()
 
 @Component({
   components: {
@@ -37,7 +34,7 @@ export default class LevelsPage extends Vue {
 
   async getLevel () {
     const id: string = this.getLevelId()
-    const level: Levels = await levelsApiHelper.getLevelById(id)
+    const level: Levels = await this.$api.levels.getLevelById(id)
     this.level = level
   }
 }
