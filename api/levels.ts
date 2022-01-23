@@ -1,7 +1,12 @@
 import { Levels } from 'wizmi'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 
-export default ($axios: NuxtAxiosInstance) => ({
+export interface LevelsRoute{
+  getLevels: () => Promise<Levels[]>
+  getLevelById: (id: string) => Promise<Levels>
+}
+
+export default ($axios: NuxtAxiosInstance): LevelsRoute => ({
   async getLevels (): Promise<Levels[]> {
     try {
       const response = await $axios.get('/levels')
