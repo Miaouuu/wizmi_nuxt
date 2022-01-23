@@ -1,3 +1,6 @@
+import en from './locales/en.json'
+import fr from './locales/fr.json'
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -36,7 +39,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/i18n'
   ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -64,6 +68,23 @@ export default {
   privateRuntimeConfig: {
     axios: {
       baseURL: process.env.API_URL
+    }
+  },
+
+  i18n: {
+    strategy: 'no_prefix',
+    locales: ['en', 'fr'],
+    defaultLocale: 'en',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root'
+    },
+    vueI18n: {
+      messages: {
+        en,
+        fr
+      }
     }
   }
 }
