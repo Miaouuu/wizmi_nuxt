@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>Page Index</div>
+    <div>{{ $t("message") }}</div>
   </div>
 </template>
 
