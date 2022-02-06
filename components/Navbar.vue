@@ -11,7 +11,7 @@
         Levels
       </NuxtLink>
     </div>
-    <div class="inline-flex">
+    <div v-if="!$auth.loggedIn" class="inline-flex">
       <NuxtLink to="/account/login" class="nav-link">
         Login
       </NuxtLink>
