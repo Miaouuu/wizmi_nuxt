@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Register</h1>
-    <form class="wizmi-form">
+    <form class="wizmi-form" @submit.prevent="register">
       <div class="wizmi-form-group">
         <label class="wizmi-label" for="username">Username</label>
         <input v-model="user.username" type="text" name="username" placeholder="Wizmi">
@@ -22,7 +22,7 @@
         <input v-model="user.passwordVerify" type="password" name="passwordVerify">
       </div>
 
-      <button class="wizmi-button-primary" @click="submitForm()">
+      <button class="wizmi-button-primary">
         LETS GOOOO
       </button>
     </form>
@@ -31,9 +31,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { RegisterUserInput } from 'wizmi'
 import { Notification, NotificationTypes } from '~/store/interfaces'
 
-@Component
+@Component({
+  middleware: ['auth'],
+  auth: 'guest'
+})
 export default class RegisterPage extends Vue {
   user = {
     username: '',
@@ -77,11 +81,16 @@ export default class RegisterPage extends Vue {
     }
   }
 
-  submitForm () {
-    if ((this.user.password === this.user.passwordVerify) && this.validateUsername() && this.validateEmail()) {
-      // console.log(this.user)
-    } else {
-      // console.log(this.notifications)
+  async register () {
+    const registerInput: RegisterUserInput = { ...this.user }
+    try {
+      await this.$api.auth.register(registerInput)
+      this.$router.push('/account/login')
+    } catch {
+      this.user.email = ''
+      this.user.username = ''
+      this.user.password = ''
+      this.user.passwordVerify = ''
     }
   }
 }

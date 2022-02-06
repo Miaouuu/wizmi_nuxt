@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Login</h1>
-    <form class="wizmi-form">
+    <form class="wizmi-form" @submit.prevent="login">
       <div class="wizmi-form-group">
         <label class="wizmi-label" for="username">Email</label>
         <input v-model="user.email" type="text" name="email">
@@ -12,7 +12,7 @@
         <input v-model="user.password" type="password" name="password">
       </div>
 
-      <button class="wizmi-button-primary" @click="submitForm()">
+      <button class="wizmi-button-primary">
         LETS GOOOO
       </button>
     </form>
@@ -23,7 +23,10 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Notification, NotificationTypes } from '~/store/interfaces'
 
-@Component
+@Component({
+  middleware: ['auth'],
+  auth: 'guest'
+})
 export default class Loginpage extends Vue {
   user = {
     email: '',
@@ -51,11 +54,12 @@ export default class Loginpage extends Vue {
     }
   }
 
-  submitForm () {
-    if (this.validateEmail()) {
-      // console.log(this.user)
-    } else {
-      // console.log(this.notifications)
+  async login () {
+    try {
+      await this.$auth.loginWith('local', { data: this.user })
+    } catch {
+      this.user.email = ''
+      this.user.password = ''
     }
   }
 }
