@@ -10,7 +10,9 @@
   ],
   "plugins": [
   ],
-  "rules": {},
+  "rules": {
+    "vue/no-v-html": "off"
+  },
   "settings": {
     "import/core-modules": [
       "vue"
