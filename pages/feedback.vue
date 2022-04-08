@@ -31,7 +31,7 @@ export default class FeedbackPage extends Vue {
   }
 
   layout () {
-    return 'wizmi-base'
+    return 'base'
   }
 
   resetFeedbackForm () {

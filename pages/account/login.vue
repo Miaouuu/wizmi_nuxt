@@ -21,37 +21,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { Notification, NotificationTypes } from '~/store/interfaces'
 
 @Component({
   middleware: ['auth'],
   auth: 'guest'
 })
-export default class Loginpage extends Vue {
+export default class LoginPage extends Vue {
   user = {
     email: '',
     password: ''
   }
 
-  notifications = {
-    email: {} as Notification
-  }
-
   layout () {
-    return 'wizmi-base'
-  }
-
-  validateEmail () {
-    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.user.email)) {
-      return true
-    } else {
-      const notif: Notification = {
-        type: NotificationTypes.Error,
-        message: 'Please enter a valid email address'
-      }
-      this.notifications.email = notif
-      return false
-    }
+    return 'base'
   }
 
   async login () {

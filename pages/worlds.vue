@@ -19,7 +19,7 @@ export default class WorldsPage extends Vue {
   @Provide() worlds: Worlds[] = []
 
   layout () {
-    return 'wizmi-base'
+    return 'base'
   }
 
   async mounted () {
