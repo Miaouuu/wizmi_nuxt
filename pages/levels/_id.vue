@@ -1,6 +1,6 @@
 <template>
   <div class="container wizmi-level-container">
-    <Square />
+    <square-level />
     <!-- <Square v-if="level.type === 'SQUARE'" /> -->
   </div>
 </template>
@@ -8,36 +8,29 @@
 <script lang="ts">
 import { Component, ProvideReactive, Vue } from 'nuxt-property-decorator'
 import { Levels } from 'wizmi'
-import Square from '../../components/Levels/Square/SquareLevel.vue'
-import LevelsApiHelper from '~/plugins/api/levels'
-
-const levelsApiHelper = new LevelsApiHelper()
+import SquareLevel from '@/components/Levels/Square/SquareLevel.vue'
 
 @Component({
   components: {
-    Square
+    SquareLevel
   }
 })
 export default class LevelsPage extends Vue {
-  @ProvideReactive() level = {} as Levels
+  @ProvideReactive() level = {
+    data: {}
+  } as Levels
 
   layout () {
-    return 'wizmi-base'
+    return 'base'
   }
 
   async mounted () {
     await this.getLevel()
   }
 
-  getLevelId () : string {
-    const url: string = window.location.pathname
-    const id : string = url.substring(url.lastIndexOf('/') + 1)
-    return id
-  }
-
   async getLevel () {
-    const id: string = this.getLevelId()
-    const level: Levels = await levelsApiHelper.getLevelById(id)
+    const id: string = this.$route.params.id
+    const level: Levels = await this.$api.levels.getLevelById(id)
     this.level = level
   }
 }

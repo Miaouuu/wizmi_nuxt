@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>{{ $t("message") }}</div>
+    <img style="width: 24px; height: 24px;" src="@/assets/icons/person.svg" alt="person">
   </div>
 </template>
 
@@ -8,9 +8,6 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class IndexPage extends Vue {
-  layout () {
-    return 'base'
-  }
+export default class SquarePlayer extends Vue {
 }
 </script>

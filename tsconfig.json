@@ -3,6 +3,7 @@
     "target": "ES2018",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "lib": [
       "ESNext",
       "ESNext.AsyncIterable",
@@ -25,7 +26,10 @@
     },
     "types": [
       "@nuxt/types",
-      "@types/node"
+      "@types/node",
+      "@nuxtjs/axios",
+      "@nuxtjs/i18n",
+      "@nuxtjs/auth-next"
     ]
   },
   "exclude": [

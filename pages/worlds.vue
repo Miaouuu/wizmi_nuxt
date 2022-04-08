@@ -9,9 +9,6 @@
 import { Component, Provide, Vue } from 'nuxt-property-decorator'
 import { Worlds } from 'wizmi'
 import WorldsStepper from '@/components/WorldsStepper/WorldsStepper.vue'
-import WorldsApiHelper from '~/plugins/api/worlds'
-
-const worldsApiHelper = new WorldsApiHelper()
 
 @Component({
   components: {
@@ -22,7 +19,7 @@ export default class WorldsPage extends Vue {
   @Provide() worlds: Worlds[] = []
 
   layout () {
-    return 'wizmi-base'
+    return 'base'
   }
 
   async mounted () {
@@ -30,7 +27,7 @@ export default class WorldsPage extends Vue {
   }
 
   async getWorlds () {
-    const worlds: Worlds[] = await worldsApiHelper.getWorlds()
+    const worlds: Worlds[] = await this.$api.worlds.getWorlds()
     this.worlds = worlds
   }
 }
