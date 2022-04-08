@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 16px);
-  padding: 8px;
+  max-width: 100vw;
+  padding: 0.5rem;
 }
 </style>

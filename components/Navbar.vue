@@ -1,44 +1,61 @@
 <template>
-  <div class="header container">
-    <div class="flex">
-      <NuxtLink to="/" class="nav-link">
-        Home
-      </NuxtLink>
-      <NuxtLink to="/worlds" class="nav-link">
-        Worlds
-      </NuxtLink>
-      <NuxtLink to="/levels/1" class="nav-link">
-        Levels
-      </NuxtLink>
+  <div class="container">
+    <div class="flex header justify-between">
+      <div class="flex">
+        <NuxtLink to="/" class="nav-link">
+          <img src="../assets/logo.svg" alt="Wizmi" class="logo">
+        </NuxtLink>
+        <NuxtLink to="/worlds" class="nav-link">
+          Worlds
+        </NuxtLink>
+        <NuxtLink to="/levels/1" class="nav-link">
+          Levels
+        </NuxtLink>
+      </div>
+      <div class="flex">
+        <SearchBar />
+      </div>
+      <div class="flex">
+        <NuxtLink to="/account/login" class="nav-link">
+          Login
+        </NuxtLink>
+        <NuxtLink to="/account/register" class="nav-link register-button">
+          Register
+        </NuxtLink>
+      </div>
     </div>
-    <div v-if="!$auth.loggedIn" class="inline-flex">
-      <NuxtLink to="/account/login" class="nav-link">
-        Login
-      </NuxtLink>
-      <NuxtLink to="/account/register" class="nav-link register-button">
-        Register
-      </NuxtLink>
-    </div>
+    <div />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import SearchBar from './SearchBar.vue'
 
-@Component
-export default class Navbar extends Vue {
-}
+@Component({
+  components: {
+    SearchBar
+  }
+})
+export default class Navbar extends Vue {}
 </script>
 
 <style lang="scss" scoped>
 @import "../assets/css/variables";
 
-.header{
+.header {
   display: flex;
-  padding: 8px 0 16px 0px;
-  justify-content: space-between;
+  padding: 2rem 0 2.5rem;
 
-  .nav-link{
+  .nav-section {
+    display: flex;
+    width: 100%;
+  }
+  .logo {
+    width: 100px;
+    height: auto;
+  }
+  .nav-link {
     display: flex;
     align-items: center;
 
@@ -49,14 +66,14 @@ export default class Navbar extends Vue {
     padding: 0 16px 0 0;
   }
 
-  .register-button{
+  .register-button {
     padding: 8px 16px;
     background-color: white;
     border-radius: 4px;
     color: $blue;
   }
 
-  a{
+  a {
     text-decoration: none;
   }
 }

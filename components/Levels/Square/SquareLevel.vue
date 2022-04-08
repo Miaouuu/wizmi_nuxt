@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-column">
-    <div class="flex flex-row h-100">
-      <div class="flex flex-column wizmi-level-aside">
+  <div class="flex-column w-100">
+    <div class="flex-row h-100">
+      <div class="flex-column wizmi-level-aside">
         <div class="wizmi-level-info">
           <div class="wizmi-level-info--location">
             {{ level.worldId }} - {{ level.id }}
@@ -32,7 +32,8 @@
           </draggable>
         </div>
       </div>
-      <div class="flex flex-column wizmi-level-playable-area">
+
+      <div class="flex-column wizmi-level-playable-area">
         <div class="wizmi-level-timeline">
           <draggable
             v-model="cardChosen"
@@ -89,7 +90,6 @@ import SquareButtons from './SquareButtons.vue'
     SquareButtons
   }
 })
-
 export default class SquareLevel extends Vue {
   @InjectReactive() level!: Levels
   public cardOptions: Actions[] = []
@@ -197,23 +197,21 @@ $topElementsHeight: 20%;
   display: flex;
   flex-direction: column;
 }
-
-.wizmi-level-aside{
-  flex-grow: 1;
+.wizmi-level-aside {
   width: 25%;
 
-  .wizmi-level-info{
+  .wizmi-level-info {
     height: $topElementsHeight;
     margin-bottom: $margin;
 
-    .wizmi-level-info--location{
+    .wizmi-level-info--location {
       font-size: 32px;
     }
-    .wizmi-level-info--name{
+    .wizmi-level-info--name {
       font-size: 24px;
     }
   }
-  .wizmi-level-options{
+  .wizmi-level-options {
     display: flex;
     flex-grow: 1;
   }
@@ -245,7 +243,7 @@ $topElementsHeight: 20%;
   flex-grow: 1;
   margin-left: $margin;
 
-  .wizmi-level-timeline{
+  .wizmi-level-timeline {
     position: relative;
     height: $topElementsHeight;
     margin-bottom: $margin;
@@ -254,7 +252,7 @@ $topElementsHeight: 20%;
       width: 24px;
     }
   }
-  .wizmi-level-game-area{
+  .wizmi-level-game-area {
     display: flex;
     flex-grow: 1;
   }
