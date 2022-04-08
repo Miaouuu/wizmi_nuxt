@@ -21,7 +21,7 @@ export default class ReleasesPage extends Vue {
   releases: Releases[] = []
 
   layout () {
-    return 'wizmi-base'
+    return 'base'
   }
 
   async mounted () {

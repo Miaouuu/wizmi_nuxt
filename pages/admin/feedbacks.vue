@@ -24,7 +24,7 @@ export default class FeedbacksAdminPage extends Vue {
   feedbacks: Feedbacks[] = []
 
   layout () {
-    return 'wizmi-base'
+    return 'base'
   }
 
   async mounted () {

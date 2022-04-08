@@ -23,7 +23,7 @@ export default class ReleaseWithChangelogsPage extends Vue {
   }
 
   layout () {
-    return 'wizmi-base'
+    return 'base'
   }
 
   async mounted () {

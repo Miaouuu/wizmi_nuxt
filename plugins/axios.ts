@@ -1,10 +1,10 @@
 import { Inject } from '@nuxt/types/app'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
-import apiAuth, { AuthRoute } from '~/api/auth'
-import apiFeedbacks, { FeedbacksRoute } from '~/api/feedbacks'
-import apiLevels, { LevelsRoute } from '~/api/levels'
-import apiReleases, { ReleasesRoute } from '~/api/releases'
-import apiWorlds, { WorldsRoute } from '~/api/worlds'
+import apiAuth, { AuthRoute } from '@/api/auth'
+import apiFeedbacks, { FeedbacksRoute } from '@/api/feedbacks'
+import apiLevels, { LevelsRoute } from '@/api/levels'
+import apiReleases, { ReleasesRoute } from '@/api/releases'
+import apiWorlds, { WorldsRoute } from '@/api/worlds'
 
 export interface ApiRoute {
   auth: AuthRoute
