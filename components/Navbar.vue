@@ -2,9 +2,6 @@
   <div class="container">
     <div class="flex header justify-between">
       <div class="flex">
-        <NuxtLink to="/" class="nav-link">
-          <img src="../assets/logo.svg" alt="Wizmi" class="logo">
-        </NuxtLink>
         <NuxtLink to="/worlds" class="nav-link">
           Worlds
         </NuxtLink>
@@ -50,10 +47,6 @@ export default class Navbar extends Vue {}
   .nav-section {
     display: flex;
     width: 100%;
-  }
-  .logo {
-    width: 100px;
-    height: auto;
   }
   .nav-link {
     display: flex;
