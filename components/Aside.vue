@@ -11,7 +11,7 @@
         </NuxtLink>
         <NuxtLink to="/levels/1" class="relative nav-link">
           <img src="../assets/icons/gaming.svg" alt="Game pages" class="aside-link">
-          <span v-if="$route.path.includes('/levels/')" class="blue-dot" />
+          <span v-if="$route.path.includes('/levels/')" class="blue-dot -mt-2" />
         </NuxtLink>
       </div>
       <div class="aside-footer">
@@ -93,6 +93,10 @@ export default class Aside extends Vue {}
   transform: translate(-50%, 2px);
   background-color: $light-blue;
   border-radius: 50%;
+}
+
+.-mt-2{
+  transform: translate(-50%, -6px) !important;
 }
 
 .nav-link{

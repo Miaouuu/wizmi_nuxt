@@ -106,7 +106,7 @@
           Ils rejoignent la plateforme :
         </span>
         <div class="flex justify-between">
-          CUISTOTO - GRATIN - LOCKEV - RUBEN - COLLIN - KEM - GERMO - RIX - SILENT - SPONK - SLYNE - CAMARA - BAKARY
+          CUISTOTO - GRATIN - LOCKEV - RUBEN - COLLIN - MEIGLORD - GERMO - RIX - SILENT - SPONK - SLYNE - CAMARA - BAKARY
           <img src="../assets/icons/arrow-right.svg" style="width: 20px" class="cursor-pointer"/>
         </div>
       </div>

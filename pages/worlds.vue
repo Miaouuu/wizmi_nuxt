@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <h1>Page Worlds</h1>
-    <WorldsStepper :worlds="worlds" />
+  <div class="relative flex flex-1 container">
+    <h1>Découvrez les différents mondes</h1>
+    <!-- <WorldsStepper :worlds="worlds" /> -->
+    <img src="../assets/icons/undraw_connected_world_way_1.svg" class="absolute bottom-0"/>
   </div>
 </template>
 
@@ -32,3 +33,9 @@ export default class WorldsPage extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.bottom-0{
+  bottom: 0;
+}
+</style>
