@@ -44,7 +44,7 @@ export default class Navbar extends Vue {}
     align-items: center;
     height: 3rem;
 
-    padding: 0 0.5em;
+    padding: 0 0.75em;
     color: #fff;
   }
 

@@ -31,7 +31,7 @@ export default class Aside extends Vue {}
   flex-direction: column;
   justify-content: space-between;
   padding: 0.5em;
-  border-radius: 20px;
+  border-radius: 16px;
   background: #F2B138;
   color: #fff;
 }

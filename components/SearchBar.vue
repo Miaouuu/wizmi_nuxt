@@ -28,6 +28,7 @@ export default class SearchBar extends Vue {
   background-color: #F2B138;
   border-radius: 12px;
   gap: 8px;
+  font-family: "Inter", sans-serif;
   .search-input{
     width: 100%;
     height: 100%;
@@ -35,7 +36,7 @@ export default class SearchBar extends Vue {
     border: none;
     text-transform: capitalize;
     color: #fff;
-    font-size: 12px; 
+    font-size: 12px;
   }
   .search-input:focus{
     outline: none;
