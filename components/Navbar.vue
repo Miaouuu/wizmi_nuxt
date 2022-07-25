@@ -1,18 +1,10 @@
 <template>
   <div class="container">
     <div class="flex header justify-between">
-      <div class="flex">
-        <NuxtLink to="/worlds" class="nav-link">
-          Worlds
-        </NuxtLink>
-        <NuxtLink to="/levels/1" class="nav-link">
-          Levels
-        </NuxtLink>
-      </div>
-      <div class="flex">
+      <div class="flex flex-1">
         <SearchBar />
       </div>
-      <div class="flex">
+      <div class="flex gap-2">
         <NuxtLink to="/account/login" class="nav-link">
           Login
         </NuxtLink>
@@ -42,7 +34,6 @@ export default class Navbar extends Vue {}
 
 .header {
   display: flex;
-  padding: 2rem 0 2.5rem;
 
   .nav-section {
     display: flex;
@@ -51,19 +42,17 @@ export default class Navbar extends Vue {}
   .nav-link {
     display: flex;
     align-items: center;
+    height: 3rem;
 
-    padding: 0 8px;
+    padding: 0 0.5em;
     color: #fff;
-  }
-  .nav-link:first-child {
-    padding: 0 16px 0 0;
   }
 
   .register-button {
-    padding: 8px 16px;
-    background-color: white;
-    border-radius: 4px;
-    color: $blue;
+    background-color: #F2B138;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
   }
 
   a {

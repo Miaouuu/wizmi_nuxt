@@ -5,15 +5,15 @@
     </NuxtLink>
     <div class="aside-container">
       <NuxtLink to="/worlds" class="nav-link">
-        <img src="../assets/globe.svg" alt="Levels page" class="aside-link">
+        <img src="../assets/icons/globe.svg" alt="Levels page" class="aside-link">
       </NuxtLink>
       <NuxtLink to="/levels/1" class="nav-link">
-        <img src="../assets/gaming.svg" alt="Game pages" class="aside-link">
+        <img src="../assets/icons/gaming.svg" alt="Game pages" class="aside-link">
       </NuxtLink>
     </div>
     <div class="aside-footer">
       <NuxtLink to="/" class="nav-link border-t-fff">
-        <img src="../assets/exit.svg" alt="Exits" class="aside-link">
+        <img src="../assets/icons/exit.svg" alt="Exits" class="aside-link">
       </NuxtLink>
     </div>
   </div>
@@ -69,7 +69,7 @@ export default class Aside extends Vue {}
 
 .logo {
   width: 80px;
-  padding: 4px 0px 8px 0px;
+  padding: 12px 0px 16px 0px;
   height: fit-content;
   height: auto;
 }
