@@ -87,6 +87,9 @@ body {
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-deny {
+  cursor: not-allowed;
+}
 
 .full-width-link {
   // Parent must be in position relative
