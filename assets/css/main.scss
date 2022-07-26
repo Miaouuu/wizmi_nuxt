@@ -155,4 +155,20 @@ body {
   cursor: pointer;
 }
 
+.modal-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16rem;
+  height: 3rem;
+  color: #fff;
+  background-color: #F2B138;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  text-transform: uppercase;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
 @import "./responsive/responsive";
