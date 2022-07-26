@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="card">
     <p class="m-0">
       if {{ condition.condition }}
     </p>
@@ -20,13 +20,8 @@ export default class SquareCardCondition extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.card-arrow{
-  width: 24px;
-  height: 24px;
-
-  img {
-    height: 24px;
-    width: 24px;
-  }
+.card {
+  color: #fff;
+  font-weight: 700;
 }
 </style>

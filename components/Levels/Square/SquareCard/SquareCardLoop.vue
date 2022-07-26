@@ -1,14 +1,13 @@
 <template>
-  <div>
+  <div class="card">
     <div class="card-replay">
       <img src="@/assets/icons/repeat.svg" alt="replay">
-    </div>
-    <p class="m-0">
       {{ loop.condition }}
-    </p>
-    <p class="m-0">
+    </div>
+    <div class="flex absolute">
       {{ loop.block }}
-    </p>
+      <img src="@/assets/icons/arrow-right.svg" alt="arrow pointing right" style="height: 10px; width: 10px;">
+    </div>
   </div>
 </template>
 
@@ -24,12 +23,23 @@ export default class SquareCardLoop extends Vue {
 
 <style lang="scss" scoped>
 .card-replay{
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
   width: 24px;
   height: 24px;
+  color: #fff;
 
   img {
-    height: 24px;
-    width: 24px;
+    height: 20px;
+    width: 20px;
   }
+}
+
+.absolute {
+  align-items: baseline;
+  bottom: 4px;
+  right: 4px;
+  color: #fff;
 }
 </style>

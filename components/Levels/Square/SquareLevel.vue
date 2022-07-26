@@ -1,71 +1,69 @@
 <template>
-  <div class="flex-column w-100">
-    <div class="flex-row h-100">
-      <div class="flex-column wizmi-level-aside">
-        <div class="wizmi-level-info">
-          <div class="wizmi-level-info--location">
-            {{ level.worldId }} - {{ level.id }}
-          </div>
-          <div class="wizmi-level-info--name">
-            {{ level.name }}
-          </div>
+  <div class="flex-row h-100 w-100 gap-4">
+    <div class="wizmi-level-aside flex-1">
+      <div class="wizmi-level-info gap-2">
+        <div class="wizmi-level-info--location">
+          {{ level.worldId }} - {{ level.id }}
         </div>
-        <div class="wizmi-level-options">
-          <draggable
-            v-model="cardOptions"
-            :animation="200"
-            ghost-class="ghost-card"
-            group="options"
-            class="wizmi-draggable wizmi-draggable-column"
-          >
-            <div v-for="(card, index) in cardOptions" :key="card.id">
-              <div v-if="card.direction" class="wizmi-square-card yellow" @click="intoChosen(index)">
-                <square-card-movement :movement="card" />
-              </div>
-              <div v-if="card.block" class="wizmi-square-card yellow" @click="intoChosen(index)">
-                <square-card-loop :loop="card" />
-              </div>
-              <div v-if="card.action" class="wizmi-square-card yellow" @click="intoChosen(index)">
-                <square-card-condition :condition="card" />
-              </div>
-            </div>
-          </draggable>
+        <div class="wizmi-level-info--name">
+          {{ level.name }}
         </div>
       </div>
+      <div class="wizmi-level-options flex-1">
+        <draggable
+          v-model="cardOptions"
+          :animation="200"
+          ghost-class="ghost-card"
+          group="options"
+          class="wizmi-draggable wizmi-draggable-column"
+        >
+          <template v-for="(card, index) in cardOptions">
+            <div v-if="card.direction" :key="card.direction" class="wizmi-square-card yellow" @click="intoChosen(index)">
+              <square-card-movement :movement="card" />
+            </div>
+            <div v-if="card.block" :key="card.block" class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
+              <square-card-loop :loop="card" />
+            </div>
+            <div v-if="card.action" :key="card.action"  class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
+              <square-card-condition :condition="card" />
+            </div>
+          </template>
+        </draggable>
+      </div>
+    </div>
 
-      <div class="flex-column wizmi-level-playable-area">
-        <div class="wizmi-level-timeline">
-          <draggable
-            v-model="cardChosen"
-            :animation="200"
-            ghost-class="ghost-card"
-            group="options"
-            class="wizmi-draggable wizmi-draggable-row"
-          >
-            <div v-for="(card, index) in cardChosen" :key="card.id">
-              <div v-if="card.direction" class="wizmi-square-card yellow" @click="intoOptions(index)">
-                <square-card-movement :movement="card" />
-              </div>
-              <div v-if="card.block" class="wizmi-square-card yellow" @click="intoOptions(index)">
-                <square-card-loop :loop="card" />
-              </div>
-              <div v-if="card.action" class="wizmi-square-card yellow" @click="intoOptions(index)">
-                <square-card-condition :condition="card" />
-              </div>
+    <div class="flex-column wizmi-level-playable-area">
+      <div class="wizmi-level-timeline">
+        <draggable
+          v-model="cardChosen"
+          :animation="200"
+          ghost-class="ghost-card"
+          group="options"
+          class="wizmi-draggable wizmi-draggable-row"
+        >
+          <template v-for="(card, index) in cardChosen">
+            <div v-if="card.direction" :key="card.direction" class="wizmi-square-card yellow" @click="intoOptions(index)">
+              <square-card-movement :movement="card" />
             </div>
-          </draggable>
-          <square-buttons :full="full" :is-playing="isPlaying" @toggle-play="togglePlay" @clean="resetTimeLine" />
-        </div>
-        <square-grid
-          :grid="grid"
-          :end="end"
-          :player="player"
-          :keys="keys"
-          :swords="swords"
-          :doors="doors"
-          :ennemies="ennemies"
-        />
+            <div v-if="card.block" :key="card.block" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
+              <square-card-loop :loop="card" />
+            </div>
+            <div v-if="card.action" :key="card.action" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
+              <square-card-condition :condition="card" />
+            </div>
+          </template>
+        </draggable>
+        <square-buttons :full="full" :is-playing="isPlaying" @toggle-play="togglePlay" @clean="resetTimeLine" />
       </div>
+      <square-grid
+        :grid="grid"
+        :end="end"
+        :player="player"
+        :keys="keys"
+        :swords="swords"
+        :doors="doors"
+        :ennemies="ennemies"
+      />
     </div>
   </div>
 </template>
@@ -187,49 +185,60 @@ export default class SquareLevel extends Vue {
 @import "../../../assets/css/variables";
 
 $margin: 16px;
-$topElementsHeight: 20%;
+$topElementsHeight: 15%;
 
 .wizmi-level-info, .wizmi-level-options, .wizmi-level-timeline {
   padding: 16px;
   background-color: white;
-  color: $blue;
-  border-radius: 4px;
+  color: $light-blue;
   display: flex;
   flex-direction: column;
 }
+.wizmi-level-info, .wizmi-level-options {
+  border-radius: 8px;
+}
+
 .wizmi-level-aside {
-  width: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: $margin;
+  max-width: 20%;
 
   .wizmi-level-info {
     height: $topElementsHeight;
-    margin-bottom: $margin;
+    min-height: 120px;
+    font-weight: 700;
 
     .wizmi-level-info--location {
       font-size: 32px;
     }
     .wizmi-level-info--name {
       font-size: 24px;
+      text-transform: uppercase;
+      color: #262626;
     }
   }
   .wizmi-level-options {
     display: flex;
-    flex-grow: 1;
   }
 }
 
 .wizmi-draggable{
   display: grid;
-  grid-auto-rows: 100px;
+  grid-auto-rows: 48px;
   width: 100%;
   height: 100%;
-  gap: 16px;
+  column-gap: 8px;
+  row-gap: 16px;
 
   .wizmi-square-card{
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     cursor: pointer;
+    border-radius: 8px;
   }
 
   .yellow{
@@ -240,13 +249,16 @@ $topElementsHeight: 20%;
 }
 
 .wizmi-level-playable-area{
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
-  margin-left: $margin;
+  gap: $margin;
 
   .wizmi-level-timeline {
     position: relative;
     height: $topElementsHeight;
-    margin-bottom: $margin;
+    min-height: 120px;
+
     img{
       height: 24px;
       width: 24px;
@@ -254,7 +266,6 @@ $topElementsHeight: 20%;
   }
   .wizmi-level-game-area {
     display: flex;
-    flex-grow: 1;
   }
 }
 
@@ -265,7 +276,6 @@ $topElementsHeight: 20%;
 .wizmi-draggable-row {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-auto-rows: 100px;
 }
 
 .ghost-card {

@@ -3,7 +3,7 @@
     <div v-if="movement.direction" class="card-arrow">
       <img :src="require(`@/assets/icons/arrow-${movement.direction}.svg`)" :alt="'arrow pointing ' + movement.direction">
     </div>
-    <p class="m-0">
+    <p class="absolute m-0">
       {{ movement.quantity }}
     </p>
   </div>
@@ -28,5 +28,11 @@ export default class SquareCardMovement extends Vue {
     height: 24px;
     width: 24px;
   }
+
+}
+.absolute{
+  bottom: 4px;
+  right: 4px;
+  color: #fff;
 }
 </style>

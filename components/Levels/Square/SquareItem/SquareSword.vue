@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <img style="width: 24px; height: 24px;" src="@/assets/icons/sword.svg" alt="sword">
+  <div class="flex justify-center w-12 h-12">
+    <img class="w-100 h-100"  src="@/assets/icons/sword.svg" alt="sword">
   </div>
 </template>
 
@@ -11,3 +11,12 @@ import { Component, Vue } from 'nuxt-property-decorator'
 export default class SquareSword extends Vue {
 }
 </script>
+
+<style lang="scss" scoped>
+.w-12 {
+  width: 3rem;
+}
+.h-12 {
+  height: 3rem;
+}
+</style>

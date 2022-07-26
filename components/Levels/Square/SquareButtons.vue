@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <div class="mode">
-      <p>{{ full ? "Full" : "Partial" }}</p>
-    </div>
+  <div class="absolute">
     <div class="play" @click="togglePlay()">
       <img v-if="!isPlaying" src="@/assets/icons/play.svg">
       <img v-else src="@/assets/icons/pause.svg">
     </div>
-    <div class="trash" @click="clean()">
-      <img src="@/assets/icons/trash.svg">
-    </div>
+    <img class="trash" src="@/assets/icons/trash.svg" @click="clean()">
+    <img class="infos" src="@/assets/icons/learning.svg" style="width: 28px;">
   </div>
 </template>
 
@@ -35,30 +31,17 @@ export default class SquareButtons extends Vue {
 
 <style lang="scss" scoped>
 @import "../../../assets/css/variables";
-
-.play, .trash, .mode{
+.absolute {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 0;
-
-  height: 48px;
-  width: 48px;
-
-  border-top: 2px solid $blue;
-  border-left: 2px solid $blue;
-
+  bottom: 8px;
+  right: 12px;
+  gap: 0.5rem;
+}
+.play, .trash, .infos{
   cursor: pointer;
-}
-.mode {
-  right: 96px;
-}
-.play{
-  right: 48px;
-}
-.trash{
-  right: 0;
 }
 img{
   height: 24px;
