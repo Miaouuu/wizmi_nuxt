@@ -18,13 +18,13 @@
           class="wizmi-draggable wizmi-draggable-column"
         >
           <template v-for="(card, index) in cardOptions">
-            <div v-if="card.direction" :key="card.direction" class="wizmi-square-card yellow" @click="intoChosen(index)">
+            <div v-if="card.direction" :key="index" class="wizmi-square-card yellow" @click="intoChosen(index)">
               <square-card-movement :movement="card" />
             </div>
-            <div v-if="card.block" :key="card.block" class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
+            <div v-if="card.block" :key="index" class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
               <square-card-loop :loop="card" />
             </div>
-            <div v-if="card.action" :key="card.action"  class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
+            <div v-if="card.action" :key="index"  class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
               <square-card-condition :condition="card" />
             </div>
           </template>
@@ -42,18 +42,18 @@
           class="wizmi-draggable wizmi-draggable-row"
         >
           <template v-for="(card, index) in cardChosen">
-            <div v-if="card.direction" :key="card.direction" class="wizmi-square-card yellow" @click="intoOptions(index)">
+            <div v-if="card.direction" :key="index" class="wizmi-square-card yellow" @click="intoOptions(index)">
               <square-card-movement :movement="card" />
             </div>
-            <div v-if="card.block" :key="card.block" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
+            <div v-if="card.block" :key="index" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
               <square-card-loop :loop="card" />
             </div>
-            <div v-if="card.action" :key="card.action" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
+            <div v-if="card.action" :key="index" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
               <square-card-condition :condition="card" />
             </div>
           </template>
         </draggable>
-        <square-buttons :full="full" :is-playing="isPlaying" @toggle-play="togglePlay" @clean="resetTimeLine" />
+        <square-buttons :full="full" :is-playing="isPlaying" @toggle-play="togglePlay" @clean="resetTimeLine" @open-infos="isModalOpened = true; modalType = 'info'" />
       </div>
       <square-grid
         :grid="grid"
@@ -65,6 +65,17 @@
         :ennemies="ennemies"
       />
     </div>
+    <GameModal :is-open="isModalOpened" :type="modalType" :content-array="modalContent" @close="isModalOpened = false">
+      <div v-if="modalType === 'info'" class="modal-button" @click="isModalOpened = false">
+        Commencer
+      </div>
+      <div v-if="modalType === 'success'" @click="$router.push(`/levels/${level.id + 1}`)" class="modal-button">
+        Niveau suivant
+      </div>
+      <div v-if="modalType === 'error'" @click="isModalOpened = false" class="modal-button">
+        Recommencer
+      </div>
+    </GameModal>
   </div>
 </template>
 
@@ -72,6 +83,7 @@
 import { Component, InjectReactive, Watch, Vue } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
 import { Levels, Actions, Key, Sword, Door, Ennemy, squareResolver } from 'wizmi'
+import GameModal from '../../GameModal/GameModal.vue'
 import SquareCardMovement from './SquareCard/SquareCardMovement.vue'
 import SquareCardLoop from './SquareCard/SquareCardLoop.vue'
 import SquareCardCondition from './SquareCard/SquareCardCondition.vue'
@@ -85,7 +97,8 @@ import SquareButtons from './SquareButtons.vue'
     SquareCardLoop,
     SquareCardCondition,
     SquareGrid,
-    SquareButtons
+    SquareButtons,
+    GameModal
   }
 })
 export default class SquareLevel extends Vue {
@@ -99,6 +112,9 @@ export default class SquareLevel extends Vue {
   public ennemies: Ennemy[] = []
   public isPlaying: Boolean = false
   public playerActionsQueue: number[][] = []
+  public isModalOpened: Boolean = false
+  public modalType: String = 'error'
+  public modalContent: Array<String> = []
 
   @Watch('level')
   onLevelChanged () {
@@ -153,8 +169,16 @@ export default class SquareLevel extends Vue {
     })
     await this.startPlayerActionsQueue()
     if (levelFinished) {
-      console.log('NICE')
+      this.modalType = 'success'
+      this.modalContent = [
+        `Tu as terminé le niveau 1 - ${this.level.id} !`,
+        'Le mot algorithme vient du nom du mathématicien perse Al-Khwarizm du IX siècle.'
+      ]
+    } else {
+      this.modalType = 'error'
+      this.modalContent = [`Tu n'as pas reussi le niveau 1 - ${this.level.id}`]
     }
+    this.isModalOpened = true
   }
 
   resetTimeLine () {

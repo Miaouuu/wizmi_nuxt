@@ -5,7 +5,7 @@
       <img v-else src="@/assets/icons/pause.svg">
     </div>
     <img class="trash" src="@/assets/icons/trash.svg" @click="clean()">
-    <img class="infos" src="@/assets/icons/learning.svg" style="width: 28px;">
+    <img class="infos" src="@/assets/icons/learning.svg" style="width: 28px;" @click="openInfos()">
   </div>
 </template>
 
@@ -24,6 +24,11 @@ export default class SquareButtons extends Vue {
 
   @Emit()
   clean () {
+    return true
+  }
+
+  @Emit()
+  openInfos () {
     return true
   }
 }
