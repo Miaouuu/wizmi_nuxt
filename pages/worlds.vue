@@ -53,6 +53,7 @@ h1 {
 .world-map {
   background-image: url('../assets/icons/undraw_connected_world_way_1.svg');
   background-repeat: no-repeat, repeat;
+  background-position: center;
 }
 
 .world-tag {
