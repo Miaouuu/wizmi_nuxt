@@ -1,210 +1,375 @@
 <template>
-  <div class="flex-row h-100 w-100 gap-4">
-    <div class="wizmi-level-aside flex-1">
-      <div class="wizmi-level-info gap-2">
-        <div class="wizmi-level-info--location">
-          {{ level.worldId }} - {{ level.id }}
-        </div>
-        <div class="wizmi-level-info--name">
-          {{ level.name }}
-        </div>
-      </div>
-      <div class="wizmi-level-options flex-1">
-        <draggable
-          v-model="cardOptions"
-          :animation="200"
-          ghost-class="ghost-card"
-          group="options"
-          class="wizmi-draggable wizmi-draggable-column"
-        >
-          <div
-            v-for="(card, index) in cardOptions"
-            :key="index"
-            class="wizmi-square-card yellow"
-            :class="[card.block || card.action ? 'col-span-2' : '' ]"
-            @click="intoChosen(index)"
-          >
-            <square-card-movement v-if="card.direction" :movement="card" />
-            <square-card-loop v-if="card.block" :loop="card" />
-            <square-card-condition v-if="card.action" :condition="card" />
+  <div class="flex flex-column">
+    <div class="flex flex-row h-100">
+      <div class="flex flex-column wizmi-level-aside">
+        <div class="wizmi-level-info">
+          <div class="wizmi-level-info--location">
+            {{ level.worldId }} - {{ level.id }}
           </div>
-        </draggable>
+          <div class="wizmi-level-info--name">
+            {{ level.name }}
+          </div>
+        </div>
+        <div class="wizmi-level-options">
+          <draggable
+            v-model="cardOptions"
+            :animation="200"
+            ghost-class="ghost-card"
+            group="options"
+            class="wizmi-draggable wizmi-draggable-column"
+          >
+            <div v-for="(movement, index) in cardOptions" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('options', index)">
+              <div v-if="movement.direction" class="card-arrow">
+                <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
+              </div>
+              <p class="m-0">
+                {{ movement.quantity }}
+              </p>
+            </div>
+          </draggable>
+        </div>
       </div>
-    </div>
 
-    <div class="flex-column wizmi-level-playable-area">
-      <div class="wizmi-level-timeline">
-        <draggable
-          v-model="cardChosen"
-          :animation="200"
-          ghost-class="ghost-card"
-          group="options"
-          class="wizmi-draggable wizmi-draggable-row"
-        >
-          <div
-            v-for="(card, index) in cardChosen"
-            :key="index"
-            class="wizmi-square-card yellow"
-            :class="[card.block || card.action ? 'col-span-2' : '' ]"
-            @click="intoOptions(index)"
+      <div class="flex flex-column wizmi-level-playable-area">
+        <div class="wizmi-level-timeline">
+          <draggable
+            v-model="cardChosen"
+            :animation="200"
+            ghost-class="ghost-card"
+            group="options"
+            class="wizmi-draggable wizmi-draggable-row"
           >
-            <square-card-movement v-if="card.direction" :movement="card" />
-            <square-card-loop v-if="card.block" :loop="card" />
-            <square-card-condition v-if="card.action" :condition="card" />
+            <div v-for="(movement, index) in cardChosen" :key="movement.id" class="wizmi-square-card yellow" @click="toggleCard('chosen', index)">
+              <div v-if="movement.direction" class="card-arrow">
+                <img src="../../../assets/icons/arrow-right-solid.svg" :alt="'arrow pointing ' + movement.direction" :class="getArrowRotationClass(movement.direction)">
+              </div>
+              <p class="m-0">
+                {{ movement.quantity }}
+              </p>
+            </div>
+          </draggable>
+
+          <div class="play" @click="togglePlay()">
+            <img v-if="isPlaying === false" src="~/assets/icons/play-solid.svg">
+            <img v-else src="~/assets/icons/pause-solid.svg">
           </div>
-        </draggable>
-        <square-buttons :full="full" :is-playing="isPlaying" @toggle-play="togglePlay" @clean="resetTimeLine" @open-infos="isModalOpened = true; modalType = 'info'" />
+          <div class="trash" @click="resetTimeline()">
+            <img src="~/assets/icons/trash-alt-solid.svg">
+          </div>
+        </div>
+
+        <div class="wizmi-level-game-area">
+          <div class="wizmi-square">
+            <div id="player" class="wizmi-player" />
+            <div
+              v-for="(squareRow, rowIndex) in gameGrid"
+              :id="`r-${rowIndex}`"
+              :key="rowIndex"
+              class="square-row"
+            >
+              <div
+                v-for="(squareBox, boxIndex) in squareRow"
+                :id="`r-${rowIndex}-b-${boxIndex}`"
+                :key="boxIndex"
+                class="square-box"
+                :class="{'full' : squareBox === 1, 'empty' : squareBox !== 1, 'end': rowIndex === level.data.end[0] && boxIndex === level.data.end[1]}"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <square-grid
-        :grid="grid"
-        :end="end"
-        :player="player"
-        :keys="keys"
-        :swords="swords"
-        :doors="doors"
-        :ennemies="ennemies"
-      />
     </div>
-    <GameModal :is-open="isModalOpened" :type="modalType" :content-array="modalContent" @close="isModalOpened = false">
-      <div v-if="modalType === 'info'" class="modal-button" @click="isModalOpened = false">
-        Commencer
-      </div>
-      <div v-if="modalType === 'success'" @click="$router.push(`/levels/${level.id + 1}`)" class="modal-button">
-        Niveau suivant
-      </div>
-      <div v-if="modalType === 'error'" @click="isModalOpened = false" class="modal-button">
-        Recommencer
-      </div>
-    </GameModal>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, InjectReactive, Watch, Vue } from 'nuxt-property-decorator'
 import draggable from 'vuedraggable'
-import { Levels, Actions, Key, Sword, Door, Ennemy, squareResolver } from 'wizmi'
-import GameModal from '../../GameModal/GameModal.vue'
-import SquareCardMovement from './SquareCard/SquareCardMovement.vue'
-import SquareCardLoop from './SquareCard/SquareCardLoop.vue'
-import SquareCardCondition from './SquareCard/SquareCardCondition.vue'
-import SquareGrid from './SquareGrid.vue'
-import SquareButtons from './SquareButtons.vue'
+import { changePlayerPosition, Condition, directionValue, isInside, Loop, Movement, Square, Items, Levels } from 'wizmi'
 
 @Component({
   components: {
-    draggable,
-    SquareCardMovement,
-    SquareCardLoop,
-    SquareCardCondition,
-    SquareGrid,
-    SquareButtons,
-    GameModal
+    draggable
   }
 })
+
 export default class SquareLevel extends Vue {
   @InjectReactive() level!: Levels
-  public cardOptions: Actions[] = []
-  public cardChosen: Actions[] = []
-  public player: number[] = [0, 0]
-  public keys: Key[] = []
-  public swords: Sword[] = []
-  public doors: Door[] = []
-  public ennemies: Ennemy[] = []
-  public isPlaying: Boolean = false
-  public playerActionsQueue: number[][] = []
-  public isModalOpened: Boolean = false
-  public modalType: String = 'error'
-  public modalContent: Array<String> = []
-  public rewardsArray: Array<String> = [
-    "Le mot « algorithme » vient du nom du mathématicien Al-Khwârizmî (latinisé au Moyen Âge en Algoritmi), qui, au IXème siècle écrivit le premier ouvrage systématique donnant des solutions aux équations linéaires et quadratiques. Les premiers algorithmes dont on a retrouvé des descriptions datent des Babyloniens, au IIIe millénaire av. J.-C.. Ils décrivent des méthodes de calcul et des résolutions d'équations à l'aide d'exemples.",
-    "Dans les mathématiques, une variable est un symbole représentant un objet indéterminé. On peut cependant ajouter des conditions sur cet objet, tel que l'ensemble ou la collection le contenant. On peut alors utiliser une variable pour marquer un rôle. Il peut s'agir d'une simple valeur, ou d'un objet mathématique tel qu'un vecteur, une matrice ou même une fonction."
-  ]
+  public isPlaying: boolean = false
+  public cardOptions: Array<Movement> = []
+  public cardChosen: Array<Movement> = []
+  public gameGrid: Array<Array<number>> = []
+  public playerPosition: Array<number> = []
+  public playerActionsQueue: Array<Array<number>> = []
 
   @Watch('level')
   onLevelChanged () {
     this.setOptions()
-    this.player = [...this.level.data.start]
-    this.keys = [...this.level.data.items.keys]
-    this.swords = [...this.level.data.items.swords]
-    this.doors = [...this.level.data.triggers.doors]
-    this.ennemies = [...this.level.data.triggers.ennemies]
+    this.setGrid()
   }
 
   setOptions () {
-    this.cardOptions = [...this.level.data.actions.movements,
-      ...this.level.data.actions.loops,
-      ...this.level.data.actions.conditions]
-      .sort(() => 0.5 - Math.random())
+    this.cardOptions = [...this.level.data?.actions?.movements]
   }
 
-  intoOptions (index: number) {
-    const card = this.cardChosen[index]
-    this.cardChosen.splice(index, 1)
-    this.cardOptions.push(card)
+  setGrid () {
+    if (this.level.data.grid) {
+      this.gameGrid = this.level.data.grid
+      this.playerPosition = this.level.data.start
+      this.movePlayerToHisPosition()
+    }
   }
 
-  intoChosen (index: number) {
-    const card = this.cardOptions[index]
-    this.cardOptions.splice(index, 1)
-    this.cardChosen.push(card)
+  toggleCard (array: string, index: number) {
+    if (array === 'chosen') {
+      const card = this.cardChosen[index]
+      this.cardChosen.splice(index, 1)
+      this.cardOptions.push(card)
+    } else {
+      const card = this.cardOptions[index]
+      this.cardOptions.splice(index, 1)
+      this.cardChosen.push(card)
+    }
   }
 
-  get grid () {
-    return this.level.data.grid
-  }
-
-  get full () {
-    return this.level.data.full
-  }
-
-  get end () {
-    return this.level.data.end
+  async togglePlay () {
+    this.isPlaying = !this.isPlaying
+    const levelFinished = await this.squareResolver(this.level.data, this.cardChosen)
+    if (levelFinished) {
+      window.location.href = '/levels/' + (this.level.id + 1)
+    }
   }
 
   sleep (ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
-  async togglePlay () {
-    this.isPlaying = !this.isPlaying
-    const cardChosen = [...this.cardChosen]
-    const levelFinished = squareResolver(this.level.data, cardChosen, {
-      cbPlayerPosition: this.pushPlayerActions
-    })
-    await this.startPlayerActionsQueue()
-    if (levelFinished) {
-      this.modalType = 'success'
-      this.modalContent = [
-        `Tu as terminé le niveau 1 - ${this.level.id} !`,
-        this.rewardsArray[this.level.id % this.rewardsArray.length]
-      ]
-    } else {
-      this.modalType = 'error'
-      this.modalContent = [`Tu n'as pas reussi le niveau 1 - ${this.level.id}`]
-    }
-    this.isModalOpened = true
-  }
-
-  resetTimeLine () {
-    this.onLevelChanged()
-    this.cardChosen = []
-    this.playerActionsQueue = []
-  }
-
-  pushPlayerActions (position: number[]) {
-    this.playerActionsQueue.push(position)
-  }
-
   async startPlayerActionsQueue () {
     if (this.isPlaying) {
-      this.player = [...this.level.data.start]
+      await this.resetPlayerToInitialPosition()
       for (const position of this.playerActionsQueue) {
-        this.player = position
+        this.setPlayerPosition(position[0], position[1])
         await this.sleep(400)
       }
     }
     this.isPlaying = false
     this.playerActionsQueue = []
+  }
+
+  setPlayerPosition (newX: number, newY: number) {
+    this.playerPosition = [newX, newY]
+    this.movePlayerToHisPosition()
+  }
+
+  movePlayerToHisPosition () {
+    const player = document.getElementById('player')
+    const targetBoxId = 'r-' + this.playerPosition[0] + '-b-' + this.playerPosition[1]
+    const targetBoxElement = document.getElementById(targetBoxId)
+    if (targetBoxElement) {
+      const centerX = targetBoxElement.offsetLeft + (targetBoxElement.offsetWidth / 2)
+      const centerY = targetBoxElement.offsetTop + (targetBoxElement.offsetHeight / 2)
+      if (player) {
+        const posLeft = centerX - (player.offsetWidth / 2)
+        const posTop = centerY - (player.offsetHeight / 2)
+        player.style.transform = 'translate(' + posLeft + 'px, ' + posTop + 'px)'
+      }
+    }
+  }
+
+  resetTimeline () {
+    this.cardChosen = []
+    this.playerActionsQueue = []
+
+    this.setOptions()
+
+    this.resetPlayerToInitialPosition()
+  }
+
+  async resetPlayerToInitialPosition () {
+    this.playerPosition = this.level.data.start
+    this.movePlayerToHisPosition()
+    await this.sleep(500)
+  }
+
+  // TODO : Clean to wizmi dep
+  async squareResolver (
+    square: Square,
+    responses: (Movement | Condition | Loop)[]
+  ) {
+  // INIT
+    let player = square.start
+    const { movements, conditions, loops } = square.actions
+    let { doors, ennemies } = square.triggers
+    let { keys, swords } = square.items
+    // const totalActions = movements.length + conditions.length + loops.length
+    // if (totalActions !== responses.length) {
+    //   return false
+    // }
+    // LOOP TO START THE GAME
+    let actualAction = 0
+    let actionResponseLoop: Loop = {
+      id: 0,
+      condition: 0,
+      block: 0
+    }
+    const actionLoop: Loop = {
+      id: 0,
+      condition: 0,
+      block: 0
+    }
+    let initActionLoop = 0
+
+    while (actualAction < responses.length) {
+      let triggerOn: Items
+      let blocked = false
+      let response
+      if (actionLoop.condition < actionResponseLoop.condition) {
+        if (actionLoop.block === actionResponseLoop.block) {
+          actionLoop.condition += 1
+          actionLoop.block = 0
+        }
+        if (actionLoop.block < actionResponseLoop.block) {
+          actionLoop.block += 1
+        }
+        response = responses[initActionLoop + actionLoop.block]
+        actualAction = initActionLoop
+      } else {
+        response = responses[actualAction]
+      }
+      if (actionLoop.condition === actionResponseLoop.condition &&
+      actionLoop.block === actionResponseLoop.block &&
+      actionResponseLoop.condition !== 0) {
+        actionResponseLoop.condition = 0
+        actualAction = initActionLoop + actionResponseLoop.block + 1
+        response = responses[actualAction]
+      }
+      if (!response) {
+        actualAction += 1
+        continue
+      }
+      keys = keys.map((key) => {
+        if (key.position[0] === player[0] && key.position[1] === player[1]) {
+          return {
+            ...key,
+            taken: true
+          }
+        }
+        return key
+      })
+      swords = swords.map((sword) => {
+        if (sword.position[0] === player[0] && sword.position[1] === player[1]) {
+          return {
+            ...sword,
+            taken: true
+          }
+        }
+        return sword
+      })
+      // ! PERMET PAS DE GERER PLUSIEURS ITEM EN MEME TEMPS && NOT REUSABLE
+      const isCondition = isInside(response, conditions)
+      if (isCondition) {
+        const condition = response as Condition
+        if (condition.action === Items.Key) {
+          const hasKey = keys.findIndex(key => key.taken)
+          if (hasKey > -1) {
+            keys.slice(hasKey, 1)
+            triggerOn = Items.Key
+          }
+        } else if (condition.action === Items.Sword) {
+          const hasSword = keys.findIndex(sword => sword.taken)
+          if (hasSword > -1) {
+            keys.slice(hasSword, 1)
+            triggerOn = Items.Sword
+          }
+        }
+      }
+
+      doors = doors.map((door) => {
+        if (door.position[0] === player[0] && door.position[1] === player[1] && !blocked) {
+          if (!door.open) {
+            if (door.needKey) {
+              if (triggerOn === Items.Key) {
+                return {
+                  ...door,
+                  open: true
+                }
+              }
+              blocked = true
+            }
+          }
+        }
+        return door
+      })
+
+      // ! NE PEUT PAS BOUGER POUR L'INSTANT
+      ennemies = ennemies.map((ennemy) => {
+        if (ennemy.position[0] === player[0] && ennemy.position[1] === player[1] && !blocked) {
+          if (!ennemy.dead) {
+            if (ennemy.needSword) {
+              blocked = triggerOn !== Items.Sword
+              if (blocked) {
+                return {
+                  ...ennemy,
+                  open: true
+                }
+              }
+            }
+          }
+        }
+        return ennemy
+      })
+      if (blocked) {
+        actualAction += 1
+        continue
+      }
+      const isLoop = isInside(response, loops)
+      // ! PERMET PAS DE FAIRE DES LOOP DANS DES LOOP
+      if (isLoop) {
+        const loop = response as Loop
+        initActionLoop = actualAction
+        actionResponseLoop = loop
+        continue
+      }
+      const isMovement = isInside(response, movements)
+      if (isMovement) {
+        const movement = response as Movement
+        const direction = directionValue(movement.direction)
+        for (let i = 0; i < movement.quantity; i += 1) {
+          player = changePlayerPosition(
+            direction,
+            {
+              start: player,
+              shape: square.shape,
+              grid: square.grid,
+              infinity: square.infinity
+            }
+          )
+        }
+        this.playerActionsQueue.push([player[0], player[1]])
+        actualAction += 1
+        continue
+      }
+      actualAction += 1
+    }
+    // END
+    await this.startPlayerActionsQueue()
+    if (JSON.stringify(player) !== JSON.stringify(square.end)) {
+      return false
+    }
+    return true
+  };
+
+  getArrowRotationClass (direction: string) {
+    switch (direction) {
+      case 'up':
+        return 'arrow_up'
+      case 'down':
+        return 'arrow_down'
+      case 'right':
+        return 'arrow_right'
+      case 'left':
+        return 'arrow_left'
+    }
   }
 }
 </script>
@@ -213,87 +378,139 @@ export default class SquareLevel extends Vue {
 @import "../../../assets/css/variables";
 
 $margin: 16px;
-$topElementsHeight: 15%;
+$topElementsHeight: 20%;
 
-.wizmi-level-info, .wizmi-level-options, .wizmi-level-timeline {
+// TODO? : Move to global css ?
+.wizmi-level-info, .wizmi-level-options, .wizmi-level-timeline, .wizmi-level-game-area{
+  // border: 2px solid $blue;
+  // box-sizing: border-box;
   padding: 16px;
+
   background-color: white;
-  color: $light-blue;
-  display: flex;
-  flex-direction: column;
+  color: $blue;
+  border-radius: 4px;
 }
-.wizmi-level-info, .wizmi-level-options {
-  border-radius: 8px;
-}
+.wizmi-level-aside{
+  flex-grow: 1;
+  width: 25%;
 
-.wizmi-level-aside {
-  display: flex;
-  flex-direction: column;
-  gap: $margin;
-  max-width: 20%;
-
-  .wizmi-level-info {
+  .wizmi-level-info{
     height: $topElementsHeight;
-    min-height: 120px;
-    font-weight: 700;
+    margin-bottom: $margin;
 
-    .wizmi-level-info--location {
+    .wizmi-level-info--location{
       font-size: 32px;
     }
-    .wizmi-level-info--name {
+    .wizmi-level-info--name{
       font-size: 24px;
-      text-transform: uppercase;
-      color: #262626;
     }
   }
-  .wizmi-level-options {
+  .wizmi-level-options{
     display: flex;
+    flex-grow: 1;
+  }
+}
+
+.wizmi-level-playable-area{
+  flex-grow: 1;
+  margin-left: $margin;
+
+  .wizmi-level-timeline{
+    position: relative;
+    height: $topElementsHeight;
+    margin-bottom: $margin;
+    .play, .trash{
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      bottom: 0;
+
+      height: 48px;
+      width: 48px;
+
+      border-top: 2px solid $blue;
+      border-left: 2px solid $blue;
+
+      cursor: pointer;
+    }
+    .play{
+      right: 48px;
+    }
+    .trash{
+      right: 0;
+    }
+    img{
+      height: 24px;
+      width: 24px;
+
+      fill: $blue;
+    }
+  }
+  .wizmi-level-game-area{
+    display: flex;
+    flex-grow: 1;
+    .wizmi-square {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin: auto auto;
+      .wizmi-player{
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background-color: red;
+        border-radius: 50%;
+        z-index: 1000;
+        transition: transform 0.3s;
+      }
+
+      .square-row{
+        display:flex;
+        flex-direction: row;
+        height: 64px;
+        box-sizing: border-box;
+        .square-box{
+          display:flex;
+          justify-content: center;
+          align-items: center;
+          width: 64px;
+          height: 100%;
+          border: 1px solid $blue;
+          box-sizing: border-box;
+
+        }
+        .end{
+            background-color: limegreen;
+          }
+        .full{
+          background-color: $blue;
+        }
+      }
+    }
   }
 }
 
 .wizmi-draggable{
   display: grid;
-  grid-auto-rows: 48px;
-  width: 100%;
-  height: 100%;
-  column-gap: 8px;
-  row-gap: 16px;
+    grid-auto-rows: 100px;
+
+    width: 100%;
+    height: 100%;
+    gap: 16px;
 
   .wizmi-square-card{
-    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     cursor: pointer;
-    border-radius: 8px;
   }
 
   .yellow{
     grid-column-end: span 1;
     grid-row-end: span 1;
     background-color: rgb(255, 210, 88);
-  }
-}
-
-.wizmi-level-playable-area{
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: $margin;
-
-  .wizmi-level-timeline {
-    position: relative;
-    height: $topElementsHeight;
-    min-height: 120px;
-
-    img{
-      height: 24px;
-      width: 24px;
-    }
-  }
-  .wizmi-level-game-area {
-    display: flex;
   }
 }
 
@@ -304,13 +521,27 @@ $topElementsHeight: 15%;
 .wizmi-draggable-row {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: 100px;
 }
 
 .ghost-card {
   border: 1px solid red;
 }
 
-.col-span-2{
-  grid-column: span 2 / span 2;
+.card-arrow{
+  width: 24px;
+  height: 24px;
 }
+.arrow_up{
+  transform: rotate(270deg);
+}
+.arrow_down{
+  transform: rotate(90deg);
+}
+.arrow_right{
+  transform: rotate(0deg);
+}.arrow_left{
+  transform: rotate(180deg);
+}
+
 </style>
