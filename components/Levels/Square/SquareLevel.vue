@@ -17,17 +17,17 @@
           group="options"
           class="wizmi-draggable wizmi-draggable-column"
         >
-          <template v-for="(card, index) in cardOptions">
-            <div v-if="card.direction" :key="index" class="wizmi-square-card yellow" @click="intoChosen(index)">
-              <square-card-movement :movement="card" />
-            </div>
-            <div v-if="card.block" :key="index" class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
-              <square-card-loop :loop="card" />
-            </div>
-            <div v-if="card.action" :key="index"  class="wizmi-square-card yellow" @click="intoChosen(index)" style="grid-column: span 2 / span 2;">
-              <square-card-condition :condition="card" />
-            </div>
-          </template>
+          <div
+            v-for="(card, index) in cardOptions"
+            :key="index"
+            class="wizmi-square-card yellow"
+            :class="[card.block || card.action ? 'col-span-2' : '' ]"
+            @click="intoChosen(index)"
+          >
+            <square-card-movement v-if="card.direction" :movement="card" />
+            <square-card-loop v-if="card.block" :loop="card" />
+            <square-card-condition v-if="card.action" :condition="card" />
+          </div>
         </draggable>
       </div>
     </div>
@@ -41,17 +41,17 @@
           group="options"
           class="wizmi-draggable wizmi-draggable-row"
         >
-          <template v-for="(card, index) in cardChosen">
-            <div v-if="card.direction" :key="index" class="wizmi-square-card yellow" @click="intoOptions(index)">
-              <square-card-movement :movement="card" />
-            </div>
-            <div v-if="card.block" :key="index" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
-              <square-card-loop :loop="card" />
-            </div>
-            <div v-if="card.action" :key="index" class="wizmi-square-card yellow" @click="intoOptions(index)" style="grid-column: span 2 / span 2;">
-              <square-card-condition :condition="card" />
-            </div>
-          </template>
+          <div
+            v-for="(card, index) in cardChosen"
+            :key="index"
+            class="wizmi-square-card yellow"
+            :class="[card.block || card.action ? 'col-span-2' : '' ]"
+            @click="intoOptions(index)"
+          >
+            <square-card-movement v-if="card.direction" :movement="card" />
+            <square-card-loop v-if="card.block" :loop="card" />
+            <square-card-condition v-if="card.action" :condition="card" />
+          </div>
         </draggable>
         <square-buttons :full="full" :is-playing="isPlaying" @toggle-play="togglePlay" @clean="resetTimeLine" @open-infos="isModalOpened = true; modalType = 'info'" />
       </div>
@@ -304,5 +304,9 @@ $topElementsHeight: 15%;
 
 .ghost-card {
   border: 1px solid red;
+}
+
+.col-span-2{
+  grid-column: span 2 / span 2;
 }
 </style>

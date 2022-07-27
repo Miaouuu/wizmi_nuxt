@@ -1,8 +1,8 @@
 <template>
   <div class=" flex flex-col flex-1 container flex-1 gap-8">
     <div class="flex flex-1 gap-8">
-      <div class="relative flex cursor-pointer">
-        <img src="../assets/images/coding.png" alt="A computer screen with code" style="width: 50vw;">
+      <div class="relative flex cursor-pointer main-picture">
+        <img src="../assets/images/coding.png" alt="A computer screen with code" class="w-100">
         <div class="image-content absolute bottom-0 left-0">
           <h1>
             Wizmi
@@ -162,6 +162,11 @@ p {
     color: #F6A228;
     margin-left: 6px;
   }
+}
+
+.main-picture {
+  width: 70%;
+  max-width: 700px;
 }
 
 .new--card{
