@@ -117,7 +117,8 @@ export default class HorizontalScroller extends Vue {
     background-color: #F2B138;
     border: 5px solid $light-blue;
     z-index: 10;
-    cursor: auto;
+    cursor: pointer;
+
   }
 
   &:not(:last-child):after {
