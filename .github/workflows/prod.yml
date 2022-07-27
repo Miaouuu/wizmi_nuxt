@@ -24,3 +24,18 @@ jobs:
 
       - name: Run linter
         run: npm run lint
+      
+      - name: Deploy Vps
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_KEY }}
+          port: ${{ secrets.PROD_PORT }}
+          script: |
+            cd wizmi_nuxt
+            git pull origin develop
+            docker-compose stop wizmi_nuxt
+            docker-compose rm -f wizmi_nuxt
+            docker image rm wizmi_nuxt
+            docker-compose up --build -d wizmi_nuxt
