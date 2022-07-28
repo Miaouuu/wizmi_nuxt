@@ -1,0 +1,15 @@
+stages:          # List of stages for jobs, and their order of execution
+  - build
+
+build-job:       # This job runs in the build stage, which runs first.
+  stage: build
+  only:
+    - merge_requests
+  script:
+    - npm install
+    - npm build
+    - npm run lint
+  image: node:16
+  cache:
+    paths: 
+      - node_modules/
