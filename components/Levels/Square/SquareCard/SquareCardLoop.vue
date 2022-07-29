@@ -1,12 +1,11 @@
 <template>
   <div class="card">
     <div class="card-replay">
-      <img src="@/assets/icons/repeat.svg" alt="replay">
-      {{ loop.condition }}
+      Boucler {{ loop.condition }} fois
     </div>
-    <div class="flex absolute">
+    <div class="flex absolute gap-1">
       {{ loop.block }}
-      <img src="@/assets/icons/arrow-right.svg" alt="arrow pointing right" style="height: 10px; width: 10px;">
+      <img src="@/assets/icons/copy.svg" alt="arrow pointing right" style="height: 11px; width: 11px;">
     </div>
   </div>
 </template>
@@ -25,8 +24,9 @@ export default class SquareCardLoop extends Vue {
 .card-replay{
   display: flex;
   align-items: baseline;
+  margin-bottom: 4px;
   gap: 2px;
-  width: 24px;
+  width: fit-content;
   height: 24px;
   color: #fff;
 
@@ -34,6 +34,10 @@ export default class SquareCardLoop extends Vue {
     height: 20px;
     width: 20px;
   }
+}
+
+.gap-1 {
+  gap: 0.25px;
 }
 
 .absolute {

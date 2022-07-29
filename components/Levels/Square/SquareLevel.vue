@@ -69,7 +69,7 @@
       <div v-if="modalType === 'info'" class="modal-button" @click="isModalOpened = false">
         Commencer
       </div>
-      <div v-if="modalType === 'success'" @click="$router.push(`/levels/${level.id + 1}`)" class="modal-button">
+      <div v-if="modalType === 'success'" @click="$router.push(level.id < 4 ? `/levels/${level.id + 1}` : '/worlds')" class="modal-button">
         Niveau suivant
       </div>
       <div v-if="modalType === 'error'" @click="isModalOpened = false" class="modal-button">
@@ -178,7 +178,7 @@ export default class SquareLevel extends Vue {
       this.modalType = 'success'
       this.modalContent = [
         `Tu as terminé le niveau 1 - ${this.level.id} !`,
-        this.rewardsArray[this.level.id % this.rewardsArray.length]
+        this.rewardsArray[this.level.id - 1] ?? ''
       ]
     } else {
       this.modalType = 'error'
